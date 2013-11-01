@@ -1,7 +1,7 @@
 	<div class="panel-heading">
 		<h3 class="panel-title">
 			<a class="pull-right" href="javascript:void(0)" data-behavior="dismiss" title="Delete">&times;</a>
-			<%= Date(Log.createdAt).toLocaleString() %>
+			<? var d = new Date(Log.createdAt) ?> <?= d.toLocaleString() ?>
 <? 
 				if (Log.Project) { 
 ?>
