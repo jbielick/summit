@@ -2,6 +2,9 @@ module.exports.policies = {
 	'*': ['appcontroller', 'isAuthenticated'],
 	UserController: {
 		login: true
+	},
+	LogController: {
+		create: true
 	}
 };
 
