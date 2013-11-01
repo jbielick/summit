@@ -1,0 +1,61 @@
+<div class="row">
+	<div class="col-xs-3">
+		<%- partial('../partials/nav-left') %>
+	</div>
+	<div class="col-xs-9">
+		<div class="row">
+			<div class="col-xs-12 well">
+				<a href="javascript:void(0)" class="btn btn-default" onclick="logs.url = '/logs'; logs.fetch({reset:true})">All Logs</a>
+				<a href="javascript:void(0)" class="btn btn-default" onclick="logs.url = '/logs/open'; logs.fetch({reset:true})">Open Logs</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 content">
+				<div class="well well-sm">
+					<a href="javascript:logs.fetch()">load more...</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/template" id="LogViewTemplate">
+	<%- partial('../partials/log-view') %>
+</script>
+
+<script type="text/template" id="ProjectViewTemplate">
+	<%- partial('../partials/project-view') %>
+</script>
+
+<script type="text/javascript" charset="utf-8">
+var logs = new App.Collection.Log(), $content = $('.content'), socket = io.connect()
+
+logs.url = '/logs/open';
+
+logs.on('reset', function(collection, model) {
+	$content.empty()
+	_.each(collection.models, function(model) {
+		$(new App.View.Log({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).prependTo($content)
+	})
+})
+
+logs.on('add', function(model, collection) {
+	$(new App.View.Log({template:  _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).prependTo($content)
+})
+
+logs.on('remove', function(model, collection) {
+	model.view.remove()
+})
+
+socket.on('connect', function socketConnected() {
+	socket.on('message', function messageReceived(message) {
+		console.log(message.verb)
+		logs.add(message.data)
+	});
+});
+
+socket.get('/logs/open', {}, function(response) {
+	logs.reset(response)
+})
+
+</script>

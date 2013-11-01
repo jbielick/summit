@@ -1,0 +1,34 @@
+<h2>Projects</h2>
+
+<% if (projects) { %>
+<table class="table table-bordered table-striped table-condensed">
+	<thead>
+		<tr>
+<%
+			_.each(projects[0], function(v, k) {
+%>
+			<td><%- k %></td>
+<%
+			})
+%>
+		</tr>
+	</thead>
+	<tbody>
+<% 
+			_.each(projects, function(project) {
+%>
+		<tr>
+<%
+			_.each(project, function(value, key) {
+%>
+			<td><% if( key !== 'url' ) { %><%-value%><% } else { %><a href="<%-value%>">View On Basecamp</a><% } %></td>
+<%
+			})
+%>
+		</tr>
+<%
+			})
+%>
+	</tbody>
+</table>
+<% } %>

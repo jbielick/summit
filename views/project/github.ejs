@@ -1,0 +1,41 @@
+<h2>Github Repos</h2>
+
+<table class="table table-bordered table-striped table-condensed">
+	<thead>
+		<tr>
+<%
+			_.each(projects[0], function(v, k) {
+%>
+			<td><%- k %></td>
+<%
+			})
+%>
+		</tr>
+	</thead>
+	<tbody>
+<% 
+			_.each(projects, function(project) {
+%>
+		<tr>
+<%
+			_.each(project, function(value, key) {
+%>
+			<td><% if( key !== 'url' ) { %><%-value%><% } else { %><a href="<%-value%>">View</a><% } %></td>
+<%
+			})
+%>
+		</tr>
+<%
+			})
+%>
+	</tbody>
+</table>
+<script type="text/javascript" charset="utf-8">
+var projects = new ProjectCollection()
+
+projects.on('reset', function(coll) {
+	
+})
+
+projects.reset(<%- JSON.stringify(projects) %>);
+</script>

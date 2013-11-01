@@ -1,0 +1,40 @@
+.center-pad {padding:100px 300px;}
+.view {padding:40px 0;}
+.top-bar {background-color:black;}
+.relative {position:relative;}
+.navbar-brand {padding-left:80px;position:relative;}
+.logo {max-height:30px;width:auto;position:absolute;top:12px;left:0px;}
+
+.log pre {margin:0;padding:8px;font-size:11px;}
+.log.panel .panel-body {padding:6px;}
+.log.panel .panel-title {font-size:12px;}
+
+.thumb {max-height:37px;max-width:37px;display:inline-block;margin-right:12px;}
+
+.slide-up {
+	-webkit-animation: marginDeleteTop .7s ease-out;
+	   -moz-animation: marginDeleteTop .7s ease-out;
+	     -o-animation: marginDeleteTop .7s ease-out;
+			  animation: marginDeleteTop .7s ease-out;
+}
+
+@-webkit-keyframes marginDeleteTop {
+	0% {margin-top:20px;}
+	100% {margin-top:0px;}
+}
+@-moz-keyframes marginDeleteTop {
+	0% {margin-top:20px;}
+	100% {margin-top:0px;}
+}
+@-o-keyframes marginDeleteTop {
+	0% {margin-top:20px;}
+	100% {margin-top:0px;}
+}
+@-ms-keyframes marginDeleteTop {
+	0% {margin-top:20px;}
+	100% {margin-top:0px;}
+}
+@keyframes marginDeleteTop {
+	0% {margin-top:20px;}
+	100% {margin-top:0px;}
+}

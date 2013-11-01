@@ -1,0 +1,21 @@
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<a class="pull-right" href="javascript:void(0)" data-behavior="dismiss" title="Delete">&times;</a>
+<? 
+				if (Log.Project) { 
+?>
+					<a href="javascript:void(0)" data-id="<?=Log.Project.id?>" data-behavior="project/open"><?=Log.Project.name?></a>
+<? 
+				} else { 
+?>
+					<?= Log.host || 'Unknown Origin' ?>
+<?
+				}
+?>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<pre>
+			<?= Log.data ?>
+		</pre>
+	</div>
