@@ -28,9 +28,11 @@
 </script>
 
 <script type="text/javascript" charset="utf-8">
-var logs = new App.Collection.Log(), $content = $('.content'), socket = io.connect()
 
-logs.url = '/logs/open';
+var logs = new App.Collection.Log(), 
+	$content = $('.content'), socket = io.connect()
+
+logs.url = '/logs';
 
 logs.on('reset', function(collection, model) {
 	$content.empty()
@@ -54,7 +56,7 @@ socket.on('connect', function socketConnected() {
 	});
 });
 
-socket.get('/logs/open', {}, function(response) {
+socket.get('/logs', {}, function(response) {
 	logs.reset(response)
 })
 
