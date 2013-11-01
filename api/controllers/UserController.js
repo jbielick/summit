@@ -20,18 +20,18 @@ module.exports = {
 		if (req.method === 'POST' && req.body.email && req.body.password) {
 			var bcrypt = require('bcrypt');
 			User.findOneByEmail(req.body.email).done(function (err, user) {
-				if (err) res.json({ error: 'DB error' }, 500);
+				if (err) return res.json({ error: 'DB error' }, 500);
 				if (user) {
 					bcrypt.compare(req.body.password, user.password, function (err, match) {
-						if (err) res.json({ error: 'Server error' }, 500);
+						if (err) return res.json({ error: 'Server error' }, 500);
 						if (match) {
 							user = user.toObject();
 							delete user.password;
 							req.session.user = user;
-							res.redirect('/home')
+							return res.redirect('/dashboard')
 						} else {
-							if (req.session.user) req.session.user = null;
-							res.json({ error: 'Invalid password' }, 403);
+							if (req.session.user) req.session.user = false;
+							return res.json({ error: 'Invalid password' }, 403);
 						}
 					});
 				} else {
