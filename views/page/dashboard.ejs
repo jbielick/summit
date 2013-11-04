@@ -57,7 +57,9 @@ socket.on('connect', function socketConnected() {
 });
 
 socket.get('/logs', {}, function(response) {
-	logs.reset(response)
+	logs.reset(_.filter(response, function(model) {
+		if (model.closed == 0) return model;
+	}))
 })
 
 </script>
