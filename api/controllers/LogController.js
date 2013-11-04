@@ -39,3 +39,7 @@ module.exports = {
 		})
 	}
 };
+
+
+// TODO : strong argument for using github id for associations. 
+// A site's errors should always be associated with a codebase, not a project/client existing in basecamp.

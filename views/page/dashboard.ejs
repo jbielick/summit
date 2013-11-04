@@ -32,7 +32,7 @@
 var logs = new App.Collection.Log(), 
 	$content = $('.content'), socket = io.connect()
 
-logs.url = '/logs';
+logs.url = '/logs/open';
 
 logs.on('reset', function(collection, model) {
 	$content.empty()
