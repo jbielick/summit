@@ -18,6 +18,9 @@
 	 <script type="text/javascript" src="/js/Models.js"></script>
 	</head>
 	<body>
+		<script type="text/javascript" charset="utf-8">
+		App.Auth.User = <%- JSON.stringify(req.session.user) %>;
+		</script>
 		<%- partial('../partials/nav') %>
 		<div class="view">
 			<div class="container">

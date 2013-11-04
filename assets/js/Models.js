@@ -1,9 +1,9 @@
 'use strict';
 
 var App = {
+	Auth: {},
 	Model: {
-		Basecamp: {},
-		Github: {}
+		Basecamp: {}
 	},
 	Collection: {},
 	View: {}
@@ -15,7 +15,7 @@ _.templateSettings = {
 	evaluate: /\<\?([\s\S]+?)\?\>/mg
 };
 
-App.Model.Github.Repo = Backbone.RelationalModel.extend({
+App.Model.Repo = Backbone.RelationalModel.extend({
 	url: function() {
 		return '/projects/github/'+this.get('id')
 	}
@@ -31,7 +31,7 @@ App.Model.Project = Backbone.RelationalModel.extend({
 	initialize: function(ops) {},
 	relations: [{
 		type: 'HasOne',
-		relatedModel: 'App.Model.Github.Repo',
+		relatedModel: 'App.Model.Repo',
 		key: 'Repo'
 	},{
 		type: 'HasOne',
@@ -93,7 +93,7 @@ App.View.Log = Backbone.View.extend({
 		this.model.get('Project').fetch()
 		var v = new App.View.Project({model: this.model.get('Project'), template: _.template($('#ProjectViewTemplate').html(), null, {variable: 'Project'})});
 		if (!v.model.get('Repo')) {
-			v.model.set('Repo', new App.Model.Github.Repo({id: v.model.get('github_id')}));
+			v.model.set('Repo', new App.Model.Repo({id: v.model.get('github_id')}));
 			v.model.set('Basecamp', new App.Model.Basecamp.Project({id: v.model.get('basecamp_id')}));
 		}
 		v.model.get('Repo').fetch({
@@ -107,7 +107,7 @@ App.View.Log = Backbone.View.extend({
 		})
 	},
 	dismiss: function(e) {
-		this.model.save({closed:1});
+		this.model.save({closed:1, user_id: _._get(App, 'App.Auth.User.id')});
 		this.remove();
 		return false;
 	},

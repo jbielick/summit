@@ -24,7 +24,7 @@ logs
 results
 
 node_modules./*
-node_modules
+/node_modules
 
 npm-debug.log
 
@@ -44,3 +44,17 @@ nbproject
 # local config
 ########################
 config/local.js
+
+/node_modules/bcrypt/package.json
+/node_modules/bcrypt/node_modules/bindings/package.json
+/node_modules/bcrypt/build/Release/obj.target/bcrypt_lib/src/blowfish.o
+/node_modules/bcrypt/build/Release/obj.target/bcrypt_lib/src/bcrypt_node.o
+/node_modules/bcrypt/build/Release/obj.target/bcrypt_lib/src/bcrypt.o
+/node_modules/bcrypt/build/Release/bcrypt_lib.node
+/node_modules/bcrypt/build/Release/.deps/Release/obj.target/bcrypt_lib/src/blowfish.o.d
+/node_modules/bcrypt/build/Release/.deps/Release/obj.target/bcrypt_lib/src/bcrypt_node.o.d
+/node_modules/bcrypt/build/Release/.deps/Release/obj.target/bcrypt_lib/src/bcrypt.o.d
+/node_modules/bcrypt/build/Release/.deps/Release/bcrypt_lib.node.d
+/node_modules/bcrypt/build/Makefile
+/node_modules/bcrypt/build/config.gypi
+/node_modules/bcrypt/build/bcrypt_lib.target.mk
