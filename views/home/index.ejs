@@ -1,1 +1,1 @@
-<h2>Welcome to Summit, <%- !req.session.user ? 'not' : '' %> logged in.</h2>
+<h2>Welcome to Summit, <%- !req.session.user ? 'stranger.' : req.session.user.email+'.' %></h2>

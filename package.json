@@ -6,18 +6,17 @@
     "dependencies": {
         "sails": "0.9.7",
         "grunt": "0.4.1",
+		  "sails-mongo": "0.9.5",
         "sails-disk": "~0.9.0",
         "ejs": "0.8.4",
-        "optimist": "0.3.4",
-		  "octonode": "0.3.5",
-		  "camper": "0.1"
+		  "octonode": "0.3.5"
     },
     "scripts": {
         "start": "node app.js",
         "debug": "node debug app.js"
     },
     "main": "app.js",
-    "repository": "",
+    "repository": "https://github.com/Fragment/Summit",
     "author": "",
     "license": ""
 }

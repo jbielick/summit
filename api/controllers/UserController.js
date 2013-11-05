@@ -31,15 +31,17 @@ module.exports = {
 							return res.redirect('/dashboard')
 						} else {
 							if (req.session.user) req.session.user = false;
-							return res.json({ error: 'Invalid password' }, 403);
+							req.session.flash = 'Email or Password is incorrect.';
+							return res.view();
 						}
 					});
 				} else {
-					res.json({ error: 'User not found' }, 404);
+					req.session.flash = 'Email or Password is incorrect.';
+					return res.view();
 				}
 			});
 		} else {
-			res.view();
+			return res.view();
 		}
 	},
 	_config: {}

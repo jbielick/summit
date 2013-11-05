@@ -20,7 +20,7 @@ module.exports = {
 	open: function(req, res) {
 		var query = Log.find()
 		if (req.param('status') !== 'all') {
-			query.where({closed: 0})
+			query.where({closed: false})
 		}
 		
 		query

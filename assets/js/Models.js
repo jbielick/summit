@@ -107,7 +107,7 @@ App.View.Log = Backbone.View.extend({
 		})
 	},
 	dismiss: function(e) {
-		this.model.save({closed: 1});
+		this.model.save({closed: true});
 		this.remove();
 		return false;
 	},
