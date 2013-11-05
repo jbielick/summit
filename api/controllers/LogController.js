@@ -24,7 +24,7 @@ module.exports = {
 		}
 		
 		query
-		.sort('id DESC')
+		.sort('createdAt DESC')
 		.exec(function(err, logs) {
 			if (err) return res.send(400)
 			_.each(logs, function(log) {
