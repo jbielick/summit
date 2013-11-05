@@ -5,7 +5,8 @@
 .waterline
 .rigging
 .tmp
-
+config/local.js
+config/adapters.js
 
 ########################
 # node.js / npm
@@ -37,9 +38,3 @@ npm-debug.log
 .netbeans
 nbproject
 .idea
-
-
-########################
-# local config
-########################
-config/local.js
