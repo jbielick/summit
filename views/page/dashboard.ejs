@@ -37,17 +37,17 @@ logs.url = '/logs/open';
 logs.on('reset', function(collection, model) {
 	$content.empty()
 	_.each(collection.models, function(model) {
-		$(new App.View.Log({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).prependTo($content)
+		$(new App.View.Log({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).appendTo($content)
 	})
-})
+});
 
 logs.on('add', function(model, collection) {
 	$(new App.View.Log({template:  _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).prependTo($content)
-})
+});
 
 logs.on('remove', function(model, collection) {
 	model.view.remove()
-})
+});
 
 socket.on('connect', function socketConnected() {
 	socket.on('message', function messageReceived(message) {
@@ -56,10 +56,8 @@ socket.on('connect', function socketConnected() {
 	});
 });
 
-socket.get('/logs', {}, function(response) {
-	logs.reset(_.filter(response, function(model) {
-		if (model.closed == 0) return model;
-	}))
-})
+logs.reset(<%- JSON.stringify(logs) %>);
+
+socket.get('/logs');
 
 </script>

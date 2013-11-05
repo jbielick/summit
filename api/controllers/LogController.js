@@ -24,7 +24,7 @@ module.exports = {
 		}
 		
 		query
-		.sort('createdAt DESC')
+		.sort({createdAt: -1})
 		.exec(function(err, logs) {
 			if (err) return res.send(400)
 			_.each(logs, function(log) {
@@ -39,7 +39,12 @@ module.exports = {
 		})
 	},
 	update: function(req, res) {
+		console.log(req.body, req.param('id'));
 		
+		Log.update({id: req.param('id')}, req.body, function(err, logs) {
+			if (err) return res.send(500, err);
+			res.json(logs[0])
+		});
 	}
 };
 

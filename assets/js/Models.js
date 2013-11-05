@@ -28,6 +28,7 @@ App.Model.Basecamp.Project = Backbone.RelationalModel.extend({
 })
 
 App.Model.Project = Backbone.RelationalModel.extend({
+	idAttribute: '_id',
 	initialize: function(ops) {},
 	relations: [{
 		type: 'HasOne',
