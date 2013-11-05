@@ -107,7 +107,7 @@ App.View.Log = Backbone.View.extend({
 		})
 	},
 	dismiss: function(e) {
-		this.model.save({closed:1, user_id: _._get(App, 'App.Auth.User.id')});
+		this.model.save({closed: true});
 		this.remove();
 		return false;
 	},
