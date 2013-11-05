@@ -37,11 +37,11 @@ module.exports = {
 					});
 				} else {
 					req.session.flash = 'Email or Password is incorrect.';
-					res.view();
+					return res.view();
 				}
 			});
 		} else {
-			res.view();
+			return res.view();
 		}
 	},
 	_config: {}
