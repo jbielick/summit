@@ -37,7 +37,10 @@ module.exports = {
 			})
 			res.json(logs)
 		})
-	}
+	},
+	// update: function(req, res) {
+	// 	
+	// }
 };
 
 
