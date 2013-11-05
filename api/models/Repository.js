@@ -35,7 +35,7 @@ module.exports = {
 	findOne: function(github_id, recursive, cb) {
 		var github = require('octonode');
 		var client = github.client('03c8b23dd8aa9f0f5db35ff6ac694af3bed99de4');
-		var recursive = typeof recursive === 'undefined' ? -1 : recursive;
+		var recursive = recursive ? -1 : recursive;
 		if (github_id) {
 			Project.findOneByGithub_id(github_id, function(err, project) {
 				if (err) return cb(err);

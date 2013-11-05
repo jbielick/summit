@@ -11,6 +11,12 @@
 	</head>
 	<body>
 		<%- partial('../partials/nav') %>
+		<div class="container">
+			<div class="alert alert-info text-center">
+				<%- req.session.flash %>
+				<% delete req.session.flash %>
+			</div>
+		</div>
 		<div class="view">
 			<div class="container">
 				<%- body %>
