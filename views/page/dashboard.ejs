@@ -51,7 +51,7 @@ logs.on('remove', function(model, collection) {
 
 socket.on('connect', function socketConnected() {
 	socket.on('message', function messageReceived(message) {
-		console.log(message.verb)
+		console.log(message)
 		logs.add(message.data)
 	});
 });

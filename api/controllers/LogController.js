@@ -37,6 +37,21 @@ module.exports = {
 			})
 			res.json(logs)
 		})
+	},
+	update: function(req, res) {
+		Log.findOne(req.param('id'), function(err, log) {
+			if (err) return res.send(500, err);
+			if (!log) return res.send(404);
+			console.log(log);
+			log = req.body;
+			console.log(log);
+			log.user_id = req.session.user.id;
+			log.save(function(err) {
+				if (err) return res.send(500);
+				Log.publishUpdate(log.id, log);
+				res.json(log);
+			});
+		})
 	}
 };
 
