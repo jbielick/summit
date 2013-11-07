@@ -17,7 +17,7 @@
 			}
 ?>
 			<? var d = new Date(Log.createdAt) ?> <?= d.toLocaleString() ?>
-			<?= Log.children && Log.children.length ? ' | <span class="badge">'+Log.children.length+'</span>' : '' ?>
+			<?= Log.child_count ? ' | <span class="badge">'+Log.child_count+'</span>' : '' ?>
 		</h3>
 	</div>
 	<div class="panel-body">
