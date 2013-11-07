@@ -18,15 +18,20 @@
 module.exports = {
 	_config: {},
 	open: function(req, res) {
+		
+		Log.subscribe(req.socket);
+		
 		var query = Log.find()
+		
 		if (req.param('status') !== 'all') {
-			query.where({closed: 0})
+			query.where({closed: false})
 		}
 		
 		query
-		.sort('createdAt DESC')
+		.sort({modifiedAt: 1})
 		.exec(function(err, logs) {
-			if (err) return res.send(400)
+			if (err) return res.view('404')
+			Log.subscribe(req.socket, logs);
 			_.each(logs, function(log) {
 				if (log.project_id) {
 					Project.findOne(log.project_id).done(function(err, project) {
@@ -38,17 +43,19 @@ module.exports = {
 			res.json(logs)
 		})
 	},
+	add: function(req, res) {
+		Log.createOrAppendChild(req, res, function(err, model) {
+			if (err) return console.log(err);
+			res.json(model);
+		});
+	},
 	update: function(req, res) {
-		Log.findOne(req.param('id'), function(err, log) {
+		req.body.user_id = req.session.user.id;
+		Log.update({id: req.param('id')}, req.body, function(err, logs) {
 			if (err) return res.send(500, err);
-			if (!log) return res.send(404);
-			log.user_id = req.session.user.id;
-			_.each();
-			log.update(function(err) {
-				if (err) return res.send(500);
-				Log.publishUpdate(log.id, req.body);
-				res.json(log.toJSON());
-			});
+			if (!logs.length) return res.view('404');
+			Log.publishUpdate(logs[0].id, logs[0].toJSON());
+			res.json(logs[0]);
 		})
 	}
 };

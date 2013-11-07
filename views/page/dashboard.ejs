@@ -51,12 +51,27 @@ logs.on('remove', function(model, collection) {
 
 socket.on('connect', function socketConnected() {
 	socket.on('message', function messageReceived(message) {
-		console.log(message)
-		logs.add(message.data)
+		if (message.verb === 'create') {
+			logs.add(message.data)
+		} else if (message.verb === 'update') {
+			if (logs.get(message.data.id)) {
+				logs.get(message.data.id).set(message.data)
+			}
+		}
 	});
 });
 
-socket.get('/logs', {}, function(response) {
+logs.on('change', function(model) {
+	var removed;
+	if (model.get('closed') && logs.url === '/logs/open') {
+		logs.remove(model);
+		model.view.remove();
+	} else {
+		model.view.render();
+	}
+})
+
+socket.get('/logs/open', {}, function(response) {
 	logs.reset(response)
 })
 
