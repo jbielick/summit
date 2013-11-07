@@ -28,7 +28,7 @@ module.exports = {
 		}
 		
 		query
-		.sort({modifiedAt: -1})
+		.sort({updatedAt: 1})
 		.exec(function(err, logs) {
 			if (err) return res.view('404')
 			Log.subscribe(req.socket, logs);
