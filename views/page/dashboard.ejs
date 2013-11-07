@@ -62,12 +62,15 @@ socket.on('connect', function socketConnected() {
 });
 
 logs.on('change', function(model) {
-	var removed;
+	var removed, changed;
 	if (model.get('closed') && logs.url === '/logs/open') {
 		logs.remove(model);
 		model.view.remove();
 	} else {
 		model.view.render();
+	}
+	if (!model.get('closed') && model.previous('closed')) {
+		logs.add(model);
 	}
 })
 
