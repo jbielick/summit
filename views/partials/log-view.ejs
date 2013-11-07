@@ -1,26 +1,34 @@
 	<div class="panel-heading">
 		<h3 class="panel-title">
 <?
-			if (Log.closed == 0) {
+			if (!Log.closed) {
 ?>
 			<a class="pull-right" href="javascript:void(0)" data-behavior="dismiss" title="Delete">&times;</a>
 <?
 			}
-				if (Log.Project) { 
+			if (Log.Project) { 
 ?>
-					<a href="javascript:void(0)" data-id="<?=Log.Project.id?>" data-behavior="project/open"><?=Log.Project.name?></a>
+				<a href="javascript:void(0)" data-id="<?=Log.Project.id?>" data-behavior="project/open"><?=Log.Project.name?></a>
 <? 
-				} else { 
+			} else { 
 ?>
-					<?= Log.host || 'Unknown Origin' ?>
+				<?= Log.host || 'Unknown Origin' ?>
 <?
-				}
+			}
 ?>
 			<? var d = new Date(Log.createdAt) ?> <?= d.toLocaleString() ?>
+			<?= Log.children && Log.children.length ? ' | <span class="badge">'+Log.children.length+'</span>' : '' ?>
 		</h3>
 	</div>
 	<div class="panel-body">
 		<pre>
 			<?= Log.data ?>
 		</pre>
+		<?
+		if (Log.user_id) {
+		?>
+		<small><pre>Assigned To: <?= Log.user_id ?></pre></small>
+		<?
+		}
+		?>
 	</div>

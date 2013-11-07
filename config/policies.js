@@ -4,7 +4,7 @@ module.exports.policies = {
 		login: true
 	},
 	LogController: {
-		create: true
+		add: true
 	}
 };
 

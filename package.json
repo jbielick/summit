@@ -9,7 +9,10 @@
 		  "sails-mongo": "0.9.5",
         "sails-disk": "~0.9.0",
         "ejs": "0.8.4",
-		  "octonode": "0.3.5"
+        "optimist": "0.3.4",
+		  "octonode": "0.3.5",
+		  "sails-mongo": "0.9.5",
+		  "bcrypt" : "0.7.7"
     },
     "scripts": {
         "start": "node app.js",
