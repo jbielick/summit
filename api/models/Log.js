@@ -4,9 +4,9 @@ module.exports = {
 			type: 'boolean',
 			defaultsTo: false
 		},
-		parent_id: {
-			type: 'string',
-			defaultsTo: null
+		child_count: {
+			type: 'integer',
+			defaultsTo: 0
 		}
 	},
 	createOrAppendChild: function(req, res, next) {
@@ -20,10 +20,10 @@ module.exports = {
 					next(null, model.toJSON());
 				});
 			} else {
-				if (!log.children) {
-					log.children = [req.body];
+				if (!log.child_count) {
+					log.child_count = 1;
 				} else {
-					log.children.push(req.body);
+					log.child_count++;
 				}
 				log.closed = false;
 				log.save(function(err) {
