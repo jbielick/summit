@@ -28,7 +28,7 @@ module.exports = {
 							user = user.toObject();
 							delete user.password;
 							req.session.user = user;
-							return res.redirect('/dashboard')
+							return res.redirect(req.session.redirect || '/dashboard')
 						} else {
 							if (req.session.user) req.session.user = false;
 							req.session.flash = 'Email or Password is incorrect.';

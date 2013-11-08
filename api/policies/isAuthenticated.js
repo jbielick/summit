@@ -3,5 +3,6 @@ module.exports = function(req, res, next) {
 		return next();
 	}
 	req.session.flash = 'Please login to continue.';
+	req.session.redirect = req.url;
 	return res.redirect('/login');
 };

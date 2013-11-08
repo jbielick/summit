@@ -23,6 +23,18 @@
 		App.Auth.User = <%- JSON.stringify(req.session.user) %>;
 		</script>
 		<%- partial('../partials/nav') %>
+<%
+		if (req.session.flash) {
+%>
+		<div class="container">
+			<div class="alert alert-info text-center">
+				<%- req.session.flash %>
+				<% delete req.session.flash %>
+			</div>
+		</div>
+<%
+		}
+%>
 		<div class="view">
 			<div class="container">
 				<%- body %>
