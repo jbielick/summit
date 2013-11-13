@@ -1,4 +1,5 @@
 require('sails').lift(null, function(err, sails) {
+	sails.LIVE_SITE = false;
 
 	sails.Form = (function() {
 		
@@ -177,9 +178,9 @@ require('sails').lift(null, function(err, sails) {
 						var status = {};
 						requester = site.protocol === 'https://' ? https : http;
 						requester.get(site.protocol+site.url, processResponse.bind(undefined, site)).on('error', function(e) {
-							console.log(new Date().getTime()+' =====================================================');
-							console.log(e)
-							console.log('/////////////// PING ERROR ======================================================');
+							processResponse(site, {statusCode: 0});
+							console.log(new Date().toLocaleString()+' '+site.url+' ====Ping Error===');
+							console.log(e);
 						})
 					});
 			});
@@ -188,18 +189,19 @@ require('sails').lift(null, function(err, sails) {
 	function processResponse(site, res) {
 		var status = {};
 		if ((res.statusCode/100).toFixed(0) > 2 && site.status && site.status.length && (site.status[0].code/100).toFixed(0) > 2 ) {
-			console.log('sendmail');
 			var nodemailer = require("nodemailer");
 			var sendmail = nodemailer.createTransport('sendmail');
 			var mailOptions = {
 			    from: "Summit <no-reply@summit.fragmentlabs.com>",
 			    to: "josh@fragmentlabs.com",
 			    subject: "Server Status Alert",
-			    html: "<b>Server Status Alert ✔</b><br><hr><br>Server status for "+this.name+" was <b>"+res.statusCode+"</b>"
+			    html: "<b>Server Status Alert: </b><br><hr><br>Server status for "+this.name+" was <b>"+res.statusCode+"</b>"
 			};
-			sendmail.sendMail(mailOptions, function(error, response){
-				console.log(error, response);
-			});
+			if (sails.LIVE_SITE) {
+				sendmail.sendMail(mailOptions, function(error, response){
+					console.log(error, response);
+				});
+			}
 		}
 		status.code = res.statusCode;
 		status.updatedAt = new Date().getTime();
@@ -207,7 +209,6 @@ require('sails').lift(null, function(err, sails) {
 		if (site.status.length > 100) {
 			site.status.pop();
 		}
-		// TODO can't keep updating the array of original data. above code references the originally queried sites rows with old status subdocument data. must keep refreshing status subdocuments or use native mongo method to push into array for status subdoc.
 		Site.update({id: site._id}, {status: site.status}, function(err, site) {if (err) console.log(err)});
 	}
 });

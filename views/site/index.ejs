@@ -4,6 +4,7 @@
 			<th>Name</th>
 			<th>URL</th>
 			<th>Status</th>
+			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -15,9 +16,12 @@
 			<td><%- site.name %></td>
 			<td><%- site.url %></td>
 			<td>
-				<span class="badge badge-<%- (status == 2 ? 'success' : ( [3,4].indexOf(status) !== -1 ? 'warning' : isNaN(status) ? '' : 'danger' ) ) %>">
+				<span class="label label-<%- (status == 2 ? 'success' : ( [3,4].indexOf(status) !== -1 ? 'warning' : isNaN(status) ? '' : 'danger' ) ) %>">
 					<%- site.status ? site.status[0].code : 'N/A' %>
 				</span>
+			</td>
+			<td>
+				<a href="/sites/update/<%- site.id %>" class="btn btn-xs btn-primary">edit</a>
 			</td>
 		</tr>
 <%
