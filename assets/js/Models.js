@@ -1,10 +1,7 @@
 'use strict';
 
 var App = {
-	Model: {
-		Basecamp: {},
-		Github: {}
-	},
+	Model: {},
 	Collection: {},
 	View: {}
 };
@@ -15,28 +12,28 @@ _.templateSettings = {
 	evaluate: /\<\?([\s\S]+?)\?\>/mg
 };
 
-App.Model.Github.Repo = Backbone.RelationalModel.extend({
+App.Model.Repo = Backbone.RelationalModel.extend({
 	url: function() {
-		return '/projects/github/'+this.get('id')
+		return '/repositories/'+this.get('id')
 	}
 })
 
-App.Model.Basecamp.Project = Backbone.RelationalModel.extend({
+App.Model.Project = Backbone.RelationalModel.extend({
 	url: function() {
 		return '/projects/basecamp/'+this.get('id')
 	}
 })
 
-App.Model.Project = Backbone.RelationalModel.extend({
+App.Model.Site = Backbone.RelationalModel.extend({
 	initialize: function(ops) {},
 	relations: [{
 		type: 'HasOne',
-		relatedModel: 'App.Model.Github.Repo',
+		relatedModel: 'App.Model.Repo',
 		key: 'Repo'
 	},{
 		type: 'HasOne',
-		relatedModel: 'App.Model.Basecamp.Project',
-		key: 'Basecamp'
+		relatedModel: 'App.Model.Project',
+		key: 'Project'
 	},{
 		type: 'HasMany',
 		relatedModel: 'App.Model.Log',
@@ -49,8 +46,8 @@ App.Model.Project = Backbone.RelationalModel.extend({
 App.Model.Log = Backbone.RelationalModel.extend({
 	initialize: function(ops) {},
 	relations: [{
-		relatedModel: 'App.Model.Project',
-		key: 'Project',
+		relatedModel: 'App.Model.Site',
+		key: 'Site',
 		type: 'HasOne'
 	}],
 	urlRoot: '/logs'
@@ -90,21 +87,22 @@ App.View.Log = Backbone.View.extend({
 		'click [data-behavior="project/open"]': 'openProject'
 	},
 	openProject: function(e) {
-		this.model.get('Project').fetch()
-		var v = new App.View.Project({model: this.model.get('Project'), template: _.template($('#ProjectViewTemplate').html(), null, {variable: 'Project'})});
-		if (!v.model.get('Repo')) {
-			v.model.set('Repo', new App.Model.Github.Repo({id: v.model.get('github_id')}));
-			v.model.set('Basecamp', new App.Model.Basecamp.Project({id: v.model.get('basecamp_id')}));
-		}
-		v.model.get('Repo').fetch({
-			success: function() {
-				v.model.get('Basecamp').fetch({
-					success: function() {
-						$(v.render().el).css('display', 'none').appendTo(document.body).modal()
-					}
-				})
-			}
-		})
+		// this.model.get('site_id')
+		// .fetch();
+		// var v = new App.View.Project({model: this.model.get('Site'), template: _.template($('#ProjectViewTemplate').html(), null, {variable: 'Site'})});
+		// if (!v.model.get('Repo')) {
+			// v.model.set('Repo', new App.Model.Github.Repo({id: v.model.get('github_id')}));
+			// v.model.set('Basecamp', new App.Model.Basecamp.Project({id: v.model.get('basecamp_id')}));
+		// }
+		// v.model.get('Repo').fetch({
+// 			success: function() {
+// 				v.model.get('Basecamp').fetch({
+// 					success: function() {
+// 						$(v.render().el).css('display', 'none').appendTo(document.body).modal()
+// 					}
+// 				})
+// 			}
+// 		})
 	},
 	dismiss: function(e) {
 		this.model.save({closed: true}, {wait: true});
@@ -116,7 +114,7 @@ App.View.Log = Backbone.View.extend({
 	}
 })
 
-App.View.Project = Backbone.View.extend({
+App.View.Site = Backbone.View.extend({
 	attributes: {
 		'class': 'modal fade none'
 	},

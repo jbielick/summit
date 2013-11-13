@@ -8,9 +8,9 @@
 			}
 			?>
 <? 
-				if (Log.Project) { 
+				if (Log.Site) { 
 ?>
-					<a href="javascript:void(0)" data-id="<?=Log.Project.id?>" data-behavior="project/open"><?=Log.Project.name?></a>
+					<a href="javascript:void(0)" data-id="<?=Log.Site.id?>" data-behavior="project/open"><?=Log.Site.name?></a>
 <? 
 				} else { 
 ?>
@@ -19,18 +19,18 @@
 				}
 ?>
 			<? var d = new Date(Log.createdAt) ?> <?= d.toLocaleString() ?>
-			<?= Log.children && Log.children.length ? ' | <span class="badge">'+Log.children.length+'</span>' : '' ?>
+			<?= Log.child_count ? ' | <span class="badge">'+Log.child_count+'</span>' : '' ?>
 		</h3>
 	</div>
 	<div class="panel-body">
 		<pre>
 			<?= Log.data ?>
 		</pre>
-		<?
-		if (Log.user_id) {
-		?>
-		<small><pre>Assigned To: <?= Log.user_id ?></pre></small>
-		<?
+<?
+		if (Log.User) {
+?>
+		<small><pre>Assigned To: <?= Log.User.first_name ?> <?= Log.User.last_name ?></pre></small>
+<?
 		}
-		?>
+?>
 	</div>

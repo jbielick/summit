@@ -1,8 +1,7 @@
 module.exports = {
 	schema: true,
 	attributes: {
-		site_id: 'string',
-		site: 'string',
+		Site: 'object',
 		host: 'string',
 		uri: 'string',
 		data: 'string',
@@ -25,12 +24,18 @@ module.exports = {
 			if (!log) {
 				// Create Log Record
 				req.body.hash = hash;
-				Log.create(req.body).done(function(err, model) {
+				Site.findOne(req.body.site_id, function(err, site) {
 					if (err) return console.log(err);
-					res.status(201);
-					Log.publishCreate(model.toJSON());
-					next(null, model.toJSON());
-				});
+					if (site) {
+						req.body.Site = site;
+					}
+					Log.create(req.body).done(function(err, model) {
+						if (err) return console.log(err);
+						res.status(201);
+						Log.publishCreate(model.toJSON());
+						next(null, model.toJSON());
+					});
+				})
 			} else {
 				if (!log.child_count) {
 					log.child_count = 1;
