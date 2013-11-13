@@ -1,0 +1,5 @@
+<pre><%- JSON.stringify(req.body, null, '\t') %></pre>
+<%- sails.Form.create('Site', req.body) %>
+<%- sails.Form.input('name') %>
+<%- sails.Form.input('url') %>
+<%- sails.Form.end('Save') %>
