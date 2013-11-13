@@ -7,7 +7,7 @@
  */
 
 module.exports = {
-	shema: true,
+	schema: true,
 	attributes: {
 		id: 'string',
 		name: 'string',

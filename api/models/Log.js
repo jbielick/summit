@@ -1,11 +1,12 @@
 module.exports = {
 	schema: true,
 	attributes: {
-		Site: 'object',
+		Site: 'json',
 		host: 'string',
 		uri: 'string',
 		data: 'string',
 		severity: 'string',
+		site_id: 'string',
 		closed: {
 			type: 'boolean',
 			defaultsTo: false
@@ -25,9 +26,10 @@ module.exports = {
 				if (!log) {
 					// Create Log Record
 					req.body.hash = hash;
-					Site.findOne({id: req.body.site_id}, function(err, site) {
+					Site.findOne(req.body.site_id, {status: 0}).done(function(err, site) {
 						if (err) return console.log(err);
 						if (site) {
+							delete site.status;
 							req.body.Site = site;
 						}
 						Log.create(req.body).done(function(err, model) {

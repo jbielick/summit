@@ -11,7 +11,7 @@ module.exports = {
 			if (err || !site) return res.send(400);
 			var recent = new Date();
 			recent.setDate( (recent.getDate() - 14) );
-			Log.find().where({project_id: project.id, createdAt: { '>': recent.toJSON()}}).exec(function(err, logs) {
+			Log.find().where({site_id: site.id, createdAt: { '>': recent.toJSON()}}).exec(function(err, logs) {
 				if (err) return res.send(400);
 				site.Log = logs;
 				res.json(site);
