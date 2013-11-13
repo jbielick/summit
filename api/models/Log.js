@@ -25,7 +25,7 @@ module.exports = {
 				if (!log) {
 					// Create Log Record
 					req.body.hash = hash;
-					Site.findOne(req.body.site_id, function(err, site) {
+					Site.findOne({id: req.body.site_id}, function(err, site) {
 						if (err) return console.log(err);
 						if (site) {
 							req.body.Site = site;
