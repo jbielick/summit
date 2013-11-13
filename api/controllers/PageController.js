@@ -18,6 +18,12 @@
 module.exports = {
 	_config: {},
 	dashboard: function(req, res) {
-		res.view()
+		Log.find().where({closed: false}).sort({modifiedAt: -1}).exec(function(err, logs) {
+			if (err) return res.send(500, err);
+			User.find().exec(function(err, users) {
+				if (err) return res.send(500, err);
+				res.view({logs: logs, users: users});
+			});
+		})
 	}
 };

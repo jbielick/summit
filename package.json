@@ -1,9 +1,10 @@
 {
-    "name": "www",
+    "name": "Summit",
     "private": true,
     "version": "0.0.0",
-    "description": "a Sails application",
+    "description": "",
     "dependencies": {
+		  "hashjs": "0.0.7",
         "sails": "0.9.7",
         "grunt": "0.4.1",
         "sails-disk": "~0.9.0",
@@ -17,8 +18,5 @@
         "start": "node app.js",
         "debug": "node debug app.js"
     },
-    "main": "app.js",
-    "repository": "",
-    "author": "",
-    "license": ""
+    "main": "app.js"
 }

@@ -16,12 +16,11 @@
 %>
 				<li class="<%- req.url == '/login' ? 'active' : '' %>"><a href="/login">Login</a></li>
 <%
-				}
-%>
-				<li><a href="#">Link</a></li>
-<% 
+				} 
 				if (req.session.user) { 
 %>
+				<li><a href="/dashboard">Log Feed</a></li>
+				<li><a href="/sites">Sites </a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
 					<ul class="dropdown-menu">
