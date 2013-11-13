@@ -32,14 +32,6 @@ module.exports = {
 		.exec(function(err, logs) {
 			if (err) return res.view('404')
 			Log.subscribe(req.socket, logs);
-			_.each(logs, function(log) {
-				if (log.project_id) {
-					Project.findOne(log.project_id).done(function(err, project) {
-						if (err) return null;
-						log.Project = project
-					})
-				}
-			})
 			res.json(logs)
 		})
 	},
