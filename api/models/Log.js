@@ -2,6 +2,7 @@ module.exports = {
 	schema: true,
 	attributes: {
 		Site: 'json',
+		events: 'array',
 		host: 'string',
 		uri: 'string',
 		data: 'string',

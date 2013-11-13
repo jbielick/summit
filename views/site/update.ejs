@@ -1,5 +1,9 @@
 <h4><?- JSON.stringify(req.body) ?></h4>
 <%- sails.Form.create('Site', req.body) %>
+<div class="form-group">
+	<label>Site ID</label>
+	<input class="form-control" disabled value="<%- req.body.id %>">
+</div>
 <%- sails.Form.input('name') %>
 <%- sails.Form.input('protocol') %>
 <%- sails.Form.input('url') %>
