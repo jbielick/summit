@@ -2,7 +2,11 @@ module.exports = {
 	schema: true,
 	attributes: {
 		Site: 'json',
-		events: 'array',
+		assignedTo: 'json',
+		events: {
+			type: 'array',
+			defaultsTo: []
+		},
 		host: 'string',
 		uri: 'string',
 		data: 'string',
@@ -32,13 +36,17 @@ module.exports = {
 						if (site) {
 							delete site.status;
 							req.body.Site = site;
+							
+							Log.create(req.body).done(function(err, model) {
+								if (err) return console.log(err);
+								res.status(201);
+								Log.publishCreate(model.toJSON());
+								next(null, model.toJSON());
+							});
+						} else {
+							console.log(new Date().toJSON()+': Bad Request: Site Not Found for '+JSON.stringify(req.body));
+							res.send(400);
 						}
-						Log.create(req.body).done(function(err, model) {
-							if (err) return console.log(err);
-							res.status(201);
-							Log.publishCreate(model.toJSON());
-							next(null, model.toJSON());
-						});
 					})
 				} else {
 					if (!log.child_count) {
@@ -48,7 +56,10 @@ module.exports = {
 					}
 					log.closed = false;
 					log.save(function(err) {
-						if (err) return console.log(err);
+						if (err) {
+							console.log(err);
+							return res.send(500);
+						}
 						res.status(200);
 						Log.publishUpdate(log.id, log.toJSON());
 						next(null, log.toJSON());
@@ -58,5 +69,30 @@ module.exports = {
 		} else {
 			res.send(400);
 		}
+	},
+	updateWithEvent: function(id, attrs, user, next) {
+		Log.findOne(id).exec(function(err, log) {
+			if (err) { 
+				console.log(err);
+				return next(err);
+			}
+			
+			if (!log.events) {
+				log.events = [];
+			}
+			
+			var currentEvent = {
+				User: user,
+				action: 'edited',
+				updatedAt: new Date().toJSON()
+			};
+			
+			log.events.unshift(currentEvent);
+			
+			log.save(function(err) {
+				Log.publishUpdate(id, log.toJSON());
+				next(null, log);
+			});
+		})
 	}
 };
