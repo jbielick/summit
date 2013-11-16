@@ -31,7 +31,7 @@ module.exports = {
 				if (!log) {
 					// Create Log Record
 					req.body.hash = hash;
-					Site.findOne(req.body.site_id, {status: 0, Repo: 0}).done(function(err, site) {
+					Site.findOne(req.body.site_id).done(function(err, site) {
 						if (err) return console.log(err);
 						if (site) {
 							delete site.status;
@@ -82,13 +82,7 @@ module.exports = {
 				log.events = [];
 			}
 			
-			var currentEvent = {
-				User: user,
-				action: 'edited',
-				updatedAt: new Date().toJSON()
-			};
-			
-			log.events.push(currentEvent);
+			log.events.push(Log.createEvent('edited', user));
 			
 			log.save(function(err) {
 				Log.publishUpdate(id, log.toJSON());
@@ -96,5 +90,12 @@ module.exports = {
 			});
 			
 		});
+	},
+	createEvent: function(action, user) {
+		return {
+			User: user,
+			action: action,
+			updatedAt: new Date().toJSON()
+		};
 	}
 };

@@ -27,9 +27,9 @@
 			<?= Log.data ?>
 		</pre>
 <?
-		if (Log.User) {
+		if (Log.assignedTo) {
 ?>
-		<small><pre>Assigned To: <?= Log.User.email ?></pre></small>
+		<small><pre>Assigned To: <?= Log.assignedTo.User.email ?></pre></small>
 <?
 		}
 ?>
