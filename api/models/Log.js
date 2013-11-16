@@ -31,7 +31,7 @@ module.exports = {
 				if (!log) {
 					// Create Log Record
 					req.body.hash = hash;
-					Site.findOne(req.body.site_id, {status: 0}).done(function(err, site) {
+					Site.findOne(req.body.site_id, {status: 0, Repo: 0}).done(function(err, site) {
 						if (err) return console.log(err);
 						if (site) {
 							delete site.status;
@@ -47,7 +47,7 @@ module.exports = {
 							console.log(new Date().toJSON()+': Bad Request: Site Not Found for '+JSON.stringify(req.body));
 							res.send(400);
 						}
-					})
+					});
 				} else {
 					if (!log.child_count) {
 						log.child_count = 1;
@@ -71,11 +71,12 @@ module.exports = {
 		}
 	},
 	updateWithEvent: function(id, attrs, user, next) {
-		Log.findOne(id).exec(function(err, log) {
-			if (err) { 
+		Log.update(id, attrs).exec(function(err, logs) {
+			if (err || logs.length == 0) { 
 				console.log(err);
 				return next(err);
 			}
+			var log = logs[0];
 			
 			if (!log.events) {
 				log.events = [];
@@ -87,12 +88,13 @@ module.exports = {
 				updatedAt: new Date().toJSON()
 			};
 			
-			log.events.unshift(currentEvent);
+			log.events.push(currentEvent);
 			
 			log.save(function(err) {
 				Log.publishUpdate(id, log.toJSON());
 				next(null, log);
 			});
-		})
+			
+		});
 	}
 };
