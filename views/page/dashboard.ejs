@@ -69,10 +69,10 @@ logs.on('change', function(model) {
 	} else {
 		model.view.render();
 	}
-})
+});
 
 socket.get('/logs/open', {}, function(response) {
 	logs.reset(response)
-})
+});
 
 </script>

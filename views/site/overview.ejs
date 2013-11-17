@@ -1,0 +1,67 @@
+<table class="table-bordered table table-condensed">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>URL</th>
+			<th>Status History</th>
+			<th>Status</th>
+			<th>&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+<%
+	sites.forEach(function(site, i) {
+		var status = site.status ? Math.floor(site.status[site.status.length-1].code / 100) : 0;
+%>
+		<tr>
+			<td><%- site.name %></td>
+			<td><%- site.url %></td>
+			<td id="graph-<%-site.id%>" class="status-graph">
+				
+			</td>
+			<td>
+				<span class="label label-<%- (status == 2 ? 'success' : ( [3,4].indexOf(status) !== -1 ? 'warning' : isNaN(status) ? '' : 'danger' ) ) %>">
+					<%- site.status ? site.status[site.status.length - 1].code : 'N/A' %>
+				</span>
+			</td>
+			<td>
+				<a href="/sites/update/<%- site.id %>" class="btn btn-xs btn-primary">edit</a>
+			</td>
+		</tr>
+		<script type="text/javascript">
+			var graph = new Raphael($('#graph-<%-site.id%>').get(0), 130, 30);
+<%
+			var statuses = _.map(site.status, function(v, k) {
+				var s = Math.floor(v.code/100), y;
+				if (s == 2) {
+					y = 0;
+				} else if (s == 5) {
+					y = 30;
+				} else {
+					y = 30/1.8;
+				}
+				if (k == 0) {
+					return 'M'+(k*1.3)+','+y;
+				} else {
+					return 'L'+(k*1.3)+','+y;
+				}
+			});
+%>
+			graph.path('<%- statuses.join() %>').attr({fill: "none", "stroke-width": 1, "stroke-linecap": "round"});
+		</script>
+<%
+	})
+%>
+	</tbody>
+</table>
+<script type="text/javascript" charset="utf-8">
+	var socket = io.connect();
+	socket.on('connect', function socketConnected() {
+		socket.on('message', function messageReceived(message) {
+			console.log(message);
+		});
+	});
+	socket.get('/sites', function(response) {
+		console.log(response)
+	});
+</script>
