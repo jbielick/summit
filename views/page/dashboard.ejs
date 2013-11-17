@@ -72,10 +72,10 @@ logs.on('change', function(model) {
 	if (!model.get('closed') && model.previous('closed')) {
 		logs.add(model);
 	}
-})
+});
 
 socket.get('/logs/open', {}, function(response) {
 	logs.reset(response)
-})
+});
 
 </script>

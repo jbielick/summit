@@ -7,7 +7,7 @@
  */
 
 module.exports = {
-	shema: true,
+	schema: true,
 	attributes: {
 		id: 'string',
 		name: 'string',
@@ -27,7 +27,12 @@ module.exports = {
 			type: 'boolean',
 			defaultsTo: false
 		},
-		status: 'integer',
-		log_count: 'integer'
+		status: 'array',
+		log_count: 'integer',
+		sansStatus: function() {
+			var data = this.toObject();
+			delete data.status;
+			return data;
+		}
 	}
 };

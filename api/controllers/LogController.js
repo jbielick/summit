@@ -32,14 +32,6 @@ module.exports = {
 		.exec(function(err, logs) {
 			if (err) return res.view('404')
 			Log.subscribe(req.socket, logs);
-			_.each(logs, function(log) {
-				if (log.project_id) {
-					Project.findOne(log.project_id).done(function(err, project) {
-						if (err) return null;
-						log.Project = project
-					})
-				}
-			})
 			res.json(logs)
 		})
 	},
@@ -50,16 +42,12 @@ module.exports = {
 		});
 	},
 	update: function(req, res) {
-		req.body.user_id = req.session.user.id;
-		Log.update({id: req.param('id')}, req.body, function(err, logs) {
-			if (err) return res.send(500, err);
-			if (!logs.length) return res.view('404');
-			Log.publishUpdate(logs[0].id, logs[0].toJSON());
-			res.json(logs[0]);
-		})
+		Log.updateWithEvent(req.param('id'), req.body, req.session.user, function(err, log) {
+			if (err || !log) {
+				console.log(err); 
+				return res.send(404);
+			}
+			res.json(log);
+		});
 	}
 };
-
-
-// TODO : strong argument for using github id for associations. 
-// A site's errors should always be associated with a codebase, not a project/client existing in basecamp.

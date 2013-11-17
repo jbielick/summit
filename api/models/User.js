@@ -35,5 +35,10 @@ module.exports = {
 				next();
 			});
 		});
+	},
+	toJSON: function() {
+		var data = this.toObject();
+		delete data.password;
+		return data;
 	}
 };

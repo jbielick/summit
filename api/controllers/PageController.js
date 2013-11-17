@@ -18,7 +18,7 @@
 module.exports = {
 	_config: {},
 	dashboard: function(req, res) {
-		Log.find().where({closed: false}).sort({createdAt: -1}).exec(function(err, logs) {
+		Log.find().where({closed: false}).sort({updatedAt: -1}).exec(function(err, logs) {
 			if (err) return res.send(500, err);
 			User.find().exec(function(err, users) {
 				if (err) return res.send(500, err);

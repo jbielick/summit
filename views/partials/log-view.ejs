@@ -6,9 +6,9 @@
 			<a class="pull-right" href="javascript:void(0)" data-behavior="dismiss" title="Delete">&times;</a>
 <?
 			}
-			if (Log.Project) { 
+			if (Log.Site) { 
 ?>
-				<a href="javascript:void(0)" data-id="<?=Log.Project.id?>" data-behavior="project/open"><?=Log.Project.name?></a>
+				<a href="javascript:void(0)" data-id="<?=Log.Site.id?>" data-behavior="project/open"><?=Log.Site.name?></a>
 <? 
 			} else { 
 ?>
@@ -24,11 +24,11 @@
 		<pre>
 			<?= Log.data ?>
 		</pre>
-		<?
-		if (Log.user_id) {
-		?>
-		<small><pre>Assigned To: <?= Log.user_id ?></pre></small>
-		<?
+<?
+		if (Log.assignedTo) {
+?>
+		<small><pre>Assigned To: <?= Log.assignedTo.User.email ?></pre></small>
+<?
 		}
-		?>
+?>
 	</div>

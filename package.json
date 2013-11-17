@@ -1,9 +1,10 @@
 {
-    "name": "www",
+    "name": "Summit",
     "private": true,
     "version": "0.0.0",
-    "description": "a Sails application",
+    "description": "",
     "dependencies": {
+		  "hashjs": "0.0.7",
         "sails": "0.9.7",
         "grunt": "0.4.1",
 		  "sails-mongo": "0.9.5",
@@ -20,6 +21,5 @@
     },
     "main": "app.js",
     "repository": "https://github.com/Fragment/Summit",
-    "author": "",
-    "license": ""
+    "author": "Josh Bielick"
 }

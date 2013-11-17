@@ -25,6 +25,16 @@
 %>
 		<div class="view">
 			<div class="container">
+<%
+			if (req.session.flash) {
+%>
+			<div class="alert alert-warning text-center">
+				<%- req.session.flash %>
+			</div>
+<%
+				delete req.session.flash;
+			}
+%>
 				<%- body %>
 			</div>
 		</div>

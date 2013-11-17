@@ -1,0 +1,113 @@
+<h4><?- JSON.stringify(req.body) ?></h4>
+<%- sails.Form.create('Site', req.body) %>
+<div class="form-group">
+	<label>Site ID</label>
+	<input class="form-control" disabled value="<%- req.body.id %>">
+</div>
+<%- sails.Form.input('name') %>
+<%- sails.Form.input('protocol') %>
+<%- sails.Form.input('url') %>
+<%- sails.Form.input('github_id') %>
+<%- sails.Form.input('github_repo_name') %>
+<%- sails.Form.input('basecamp_id') %>
+<%- sails.Form.end('Save') %>
+	<h4 class="modal-title"><?= req.body.name ?><small> at a glance</small></h4>
+<?
+	if (req.body.Project) {
+?>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<?= req.body.Project.name ?><small> on Basecamp</small>
+<?
+				if(req.body.Project.archived) {
+?>
+				<span class="label label-warning">Archived</span>
+<?
+				}
+?>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<h4>Todo Progress:</h4>
+			<div class="progress progress-striped active">
+			  <div class="progress-bar"  role="progressbar" style="width: <?=(Number(req.body.Project.todolists.completed_count) / (req.body.Project.todolists.remaining_count + Project.Basecamp.todolists.completed_count) ) * 100?>%">
+			    <span class="sr-only">45% Complete</span>
+			  </div>
+			</div>
+			<table class="table table-bordered">
+				<tr>
+					<td><a href="<?=Project.Basecamp.todolists.url?>" target="blank">Open Todos:</a></td>
+					<td><span class="label label-default"><?=req.body.Project.todolists.remaining_count?></span></td>
+				</tr>
+				<tr>
+					<td><a href="<?=Project.Basecamp.todolists.url?>" target="blank">Completed Todos:</a></td>
+					<td><span class="label label-default"><?=req.body.Project.todolists.completed_count?></span></td>
+				</tr>
+				<tr>
+					<td>Discussions:</td>
+					<td><span class="label label-default"><?=req.body.Project.topics.count?></span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+<?
+	}
+	if (req.body.Repo) {
+?>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<img class="thumb" src="<?=Project.Repo.owner.avatar_url?>" alt=""><a href="<?=Project.Repo.html_url?>" target="_blank"><?- Project.Repo.full_name ?></a><small> on Github</small>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-bordered">
+				<tr>
+					<td>Open Issues:</td>
+					<td><span class="label <?=Project.Repo.open_issues > 0 ? 'label-danger' : 'label-success'?>"><?=Project.Repo.open_issues?></span></td>
+				</tr>
+				<tr>
+					<td>Size:</td>
+					<td><span class="label label-default"><?=Project.Repo.size?></span></td>
+				</tr>
+				<tr>
+					<td>Last Push:</td>
+					<td><span class="label label-default"><?=new Date(Project.Repo.pushed_at).toLocaleString()?></span></td>
+				</tr>
+				<tr>
+					<td>Language:</td>
+					<td><span class="label label-default"><?=Project.Repo.language?></span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+<?
+	}
+	if (Project.Log) {
+?>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<?- Project.name ?><small> on Summit</small>
+			</h3>
+		</div>
+		<div class="panel-body">
+			<div class="well">
+				<span>Recent Open Logs: <small>(since <? var d = new Date(); d.setDate((d.getDate() - 14)); print(d.toDateString())?>)</small></span>
+				<span class="label <?=Project.Log.length === 0 ? 'label-success' : (Project.Log.length > 20 ? 'label-warning' : (Project.Log.length > 30 ? 'label-danger' : 'label-default'))?>"><?=Project.Log.length?></span>
+			</div>
+			<div class="logCollection">
+<?
+				_.each(Project.Log, function(log) {
+?>
+				<span class="label label-default"><? var d = new Date(log.createdAt); print(d.toLocaleDateString()+' '+d.toLocaleTimeString())?></span><span> <?=log.data.substr(0, 20) ?></span><br>
+<?
+				})
+?>
+			</div>
+		</div>
+	</div>
+<?
+	}
+?>
