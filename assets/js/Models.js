@@ -54,7 +54,11 @@ App.Model.Log = Backbone.RelationalModel.extend({
 		type: 'HasOne'
 	}],
 	urlRoot: '/logs'
-})
+});
+
+App.Model.Site = Backbone.Model.extend({
+	urlRoot: '/sites'
+});
 
 /*=====================================
  *  Collections

@@ -1,22 +1,32 @@
 module.exports = {
 	_config: {},
-	index: function(req, res) {
+	overview: function(req, res) {
 		Site.find({active: true}).sort({updatedAt: -1}).exec(function(err, sites) {
-			if (err) return console.log(err);
+			if (err) return sails.log.error(err);
+			Site.subscribe(req.socket, sites);
 			res.view({sites: sites})
 		})
 	},
 	find: function(req, res) {
-		Site.findOne(req.param('id'), function(err, site) {
-			if (err || !site) return res.send(400);
-			var recent = new Date();
-			recent.setDate( (recent.getDate() - 14) );
-			Log.find().where({project_id: project.id, createdAt: { '>': recent.toJSON()}}).exec(function(err, logs) {
-				if (err) return res.send(400);
-				site.Log = logs;
-				res.json(site);
+		if (req.param('id')) {
+			Site.findOne(req.param('id'), function(err, site) {
+				if (err || !site) return res.send(500);
+				Site.subscribe(req.socket, site);
+				var recent = new Date();
+				recent.setDate( (recent.getDate() - 14) );
+				Log.find().where({site_id: site.id, createdAt: { '>': recent.toJSON()}}).exec(function(err, logs) {
+					if (err) sails.log.error(err);
+					site.Log = logs;
+					res.json(site);
+				})
 			})
-		})
+		} else {
+			Site.find({}, function(err, sites) {
+				if (err) return res.send(500);
+				Site.subscribe(req.socket, sites);
+				res.json(sites);
+			});
+		}
 	},
 	update: function(req, res) {
 		if (req.method.toLowerCase() === 'post') {
