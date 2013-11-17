@@ -170,9 +170,9 @@ App.View.SiteRow = Backbone.View.extend({
 				y = 30/1.8;
 			}
 			if (k == 0) {
-				return 'M'+(k*1.3)+','+y;
+				return 'M'+k+','+y;
 			} else {
-				return 'L'+(k*1.3)+','+y;
+				return 'L'+k+','+y;
 			}
 		});
 		this.el.innerHTML = this.template(this.model.toJSON());

@@ -3,6 +3,7 @@
 		<tr>
 			<th>Name</th>
 			<th>URL</th>
+			<tH>Updated</tH>
 			<th>Status History</th>
 			<th>Status</th>
 			<th>&nbsp;</th>
@@ -18,6 +19,9 @@
 	?>
 	<td><?= Site.name ?></td>
 	<td><?= Site.url ?></td>
+	<td>
+		<?= new Date(Site.status[Site.status.length-1].createdAt).toLocaleString() ?>
+	</td>
 	<td id="graph-<?-Site.id?>" class="status-graph">
 
 	</td>
