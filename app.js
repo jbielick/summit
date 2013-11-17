@@ -69,13 +69,16 @@ require('sails').lift(null, function(err, sails) {
 				createdAt: new Date().toJSON()
 			});
 	
-			while (site.status.length > 100) {
+			//TODO see note below.
+			while (site.status.length > 200) {
 				site.status.shift();
 			}
 
-			Site.update({id: site._id}, {status: site.status}, function(err, sites) { 
-				console.log((sites[0]._id, sites[0].toJSON()));
-				if (err) console.log(err); Site.publishUpdate(sites[0].id, sites[0].toJSON());
+			Site.update({id: site._id}, {status: site.status}, function(err, sites) {
+				if (err) console.log(err); 
+				Site.publishUpdate(sites[0].id, sites[0].toJSON());
+				// TODO yeah, you probably shouldn't socket.io 17K subdocuments every 10 seconds
+				// limit the pubsub to most recent and only push into arrays. /sites/overview
 			});
 		}
 		return Ping;

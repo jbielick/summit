@@ -53,23 +53,23 @@ App.Model.Log = Backbone.RelationalModel.extend({
 	urlRoot: '/logs'
 });
 
-App.Model.Site = Backbone.Model.extend({
-	urlRoot: '/sites'
-});
-
 /*=====================================
  *  Collections
  *=====================================*/
 
+App.Collection.Site = Backbone.Collection.extend({
+	model: App.Model.Site
+});
+
 App.Collection.Project = Backbone.Collection.extend({
 	model: App.Model.Project,
 	url: '/projects'
-})
+});
 
 App.Collection.Log = Backbone.Collection.extend({
 	model: App.Model.Log,
 	url: '/logs'
-})
+});
 
 
 /*=====================================
@@ -142,4 +142,40 @@ App.View.Site = Backbone.View.extend({
 		})
 		return this;
 	}
-})
+});
+
+App.View.SiteRow = Backbone.View.extend({
+	tagName: 'tr',
+	initialize: function(options) {
+		if (options.model) {
+			this.model = options.model;
+		}
+		if (options.template) {
+			this.template = options.template;
+			this.render();
+		}
+		this.listenTo(this.model, 'change', function() {
+			this.render();
+		});
+	},
+	render: function() {
+		var statuses = _.map(this.model.get('status'), function(v, k) {
+			var s = Math.floor(v.code/100), y;
+			if (s == 2) {
+				y = 0;
+			} else if (s == 5) {
+				y = 30;
+			} else {
+				y = 30/1.8;
+			}
+			if (k == 0) {
+				return 'M'+(k*1.3)+','+y;
+			} else {
+				return 'L'+(k*1.3)+','+y;
+			}
+		});
+		this.el.innerHTML = this.template(this.model.toJSON());
+		var graph = new Raphael(this.$('.status-graph').get(0), 200, 30);
+		graph.path(statuses.join()).attr({fill: "none", "stroke-width": 1, "stroke-linecap": "round"});
+	}
+});

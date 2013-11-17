@@ -4,7 +4,7 @@ module.exports = {
 		Site.find({active: true}).sort({updatedAt: -1}).exec(function(err, sites) {
 			if (err) return sails.log.error(err);
 			Site.subscribe(req.socket, sites);
-			res.view({sites: sites})
+			res.view({sites: sites});
 		})
 	},
 	find: function(req, res) {
@@ -23,8 +23,11 @@ module.exports = {
 		} else {
 			Site.find({}, function(err, sites) {
 				if (err) return res.send(500);
-				Site.subscribe(req.socket, sites);
-				res.json(sites);
+				var models = _.map(sites, function(site) {
+					return site.sansStatus();
+				});
+				Site.subscribe(req.socket, models);
+				res.json(models);
 			});
 		}
 	},
@@ -33,7 +36,7 @@ module.exports = {
 			Site.update({id: req.body.id}, req.body, function(err, sites) {
 				if (err) return console.log(err);
 				req.session.flash = 'The site was saved successfully';
-				req.body = sites[0];
+				req.body = sites[0].toJSON();
 				res.view();
 			});
 		} else {

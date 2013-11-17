@@ -35,7 +35,7 @@ module.exports = {
 						if (err) return console.log(err);
 						if (site) {
 							delete site.status;
-							req.body.Site = site;
+							req.body.Site = site.toJSON();
 							
 							Log.create(req.body).done(function(err, model) {
 								if (err) return console.log(err);

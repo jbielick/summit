@@ -28,6 +28,11 @@ module.exports = {
 			defaultsTo: false
 		},
 		status: 'array',
-		log_count: 'integer'
+		log_count: 'integer',
+		sansStatus: function() {
+			var data = this.toObject();
+			delete data.status;
+			return data;
+		}
 	}
 };

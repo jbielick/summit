@@ -9,59 +9,53 @@
 		</tr>
 	</thead>
 	<tbody>
-<%
-	sites.forEach(function(site, i) {
-		var status = site.status ? Math.floor(site.status[site.status.length-1].code / 100) : 0;
-%>
-		<tr>
-			<td><%- site.name %></td>
-			<td><%- site.url %></td>
-			<td id="graph-<%-site.id%>" class="status-graph">
-				
-			</td>
-			<td>
-				<span class="label label-<%- (status == 2 ? 'success' : ( [3,4].indexOf(status) !== -1 ? 'warning' : isNaN(status) ? '' : 'danger' ) ) %>">
-					<%- site.status ? site.status[site.status.length - 1].code : 'N/A' %>
-				</span>
-			</td>
-			<td>
-				<a href="/sites/update/<%- site.id %>" class="btn btn-xs btn-primary">edit</a>
-			</td>
-		</tr>
-		<script type="text/javascript">
-			var graph = new Raphael($('#graph-<%-site.id%>').get(0), 130, 30);
-<%
-			var statuses = _.map(site.status, function(v, k) {
-				var s = Math.floor(v.code/100), y;
-				if (s == 2) {
-					y = 0;
-				} else if (s == 5) {
-					y = 30;
-				} else {
-					y = 30/1.8;
-				}
-				if (k == 0) {
-					return 'M'+(k*1.3)+','+y;
-				} else {
-					return 'L'+(k*1.3)+','+y;
-				}
-			});
-%>
-			graph.path('<%- statuses.join() %>').attr({fill: "none", "stroke-width": 1, "stroke-linecap": "round"});
-		</script>
-<%
-	})
-%>
 	</tbody>
 </table>
+
+<script type="text/template" charset="utf-8" id="SiteRowTemplate">
+	<?
+		var status = Site.status ? Math.floor(Site.status[Site.status.length-1].code / 100) : 0;
+	?>
+	<td><?= Site.name ?></td>
+	<td><?= Site.url ?></td>
+	<td id="graph-<?-Site.id?>" class="status-graph">
+
+	</td>
+	<td>
+		<span class="label label-<?- (status == 2 ? 'success' : ( [3,4].indexOf(status) !== -1 ? 'warning' : isNaN(status) ? '' : 'danger' ) ) ?>">
+			<?= Site.status ? Site.status[Site.status.length - 1].code : 'N/A' ?>
+		</span>
+	</td>
+	<td>
+		<a href="/sites/update/<?= Site.id ?>" class="btn btn-xs btn-primary">edit</a>
+	</td>
+</script>
+
 <script type="text/javascript" charset="utf-8">
-	var socket = io.connect();
-	socket.on('connect', function socketConnected() {
-		socket.on('message', function messageReceived(message) {
-			console.log(message);
+
+	var socket = io.connect(),
+		sites = new App.Collection.Site();
+		
+	sites.on('reset', function(collection) {
+		_.each(collection.models, function(site) {
+			site.view = new App.View.SiteRow({template: _.template($('#SiteRowTemplate').html(), null, {variable: 'Site'}), model: site});
+			site.view.$el.appendTo('tbody');
 		});
 	});
-	socket.get('/sites', function(response) {
-		console.log(response)
+	
+	socket.on('connect', function socketConnected() {
+		socket.on('message', function messageReceived(message) {
+			if (message.verb === 'create') {
+				sites.add(message.data)
+			} else if (message.verb === 'update') {
+				if (sites.get(message.data.id)) {
+					sites.get(message.data.id).set(message.data)
+				}
+			}
+		});
 	});
+	
+	sites.reset(<%- JSON.stringify(sites) %>);
+	socket.get('/sites');
+	
 </script>
