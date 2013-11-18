@@ -28,8 +28,10 @@ require('sails').lift(null, function(err, sails) {
 					}).toArray(function(err, sites) {
 							_.each(sites, function pingSite(site) {
 								var requester = site.protocol === 'https://' ? _this.https : _this.http;
-								requester.get(site.protocol+site.url, _this.processResponse.bind(_this, site)).on('error', function(e) {
-									processResponse(site, {statusCode: 0});
+								requester.get(site.protocol+site.url, function(res) {
+									_this.processResponse(site, res)
+								}).on('error', function(e) {
+									_this.processResponse(site, {statusCode: 0}, e);
 									console.log(new Date().toLocaleString()+' '+site.url+' ====Ping Error===');
 									console.log(e);
 								})
@@ -39,7 +41,7 @@ require('sails').lift(null, function(err, sails) {
 			}, this.period);
 		};
 		
-		Ping.prototype.processResponse = function(site, res) {
+		Ping.prototype.processResponse = function(site, res, e) {
 			var _this = this;
 			if (
 				site.status 

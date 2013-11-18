@@ -49,6 +49,7 @@
 	
 	socket.on('connect', function socketConnected() {
 		socket.on('message', function messageReceived(message) {
+			console.log(message)
 			if (message.verb === 'create') {
 				sites.add(message.data)
 			} else if (message.verb === 'update') {
