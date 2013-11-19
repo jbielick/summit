@@ -17,7 +17,7 @@
 	<?
 		var status = Site.status ? Math.floor(Site.status[Site.status.length-1].code / 100) : 0;
 	?>
-	<td><?= Site.name ?></td>
+	<td><?= Site.name ?></thead>
 	<td><?= Site.url ?></td>
 	<td>
 		<?= new Date(Site.status[Site.status.length-1].createdAt).toLocaleString() ?>
@@ -33,6 +33,7 @@
 	<td>
 		<a href="/sites/update/<?= Site.id ?>" class="btn btn-xs btn-primary">edit</a>
 	</td>
+	
 </script>
 
 <script type="text/javascript" charset="utf-8">

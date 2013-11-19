@@ -13,10 +13,8 @@ module.exports.routes = {
 		action			: 'dashboard'
 	},
 	'post /logs'		: 'LogController.add',
-	'/login': {
-		controller		: 'UserController',
-		action			: 'login'
-	}
+	'/login'				: 'UserController.login',
+	'/logout' 			: 'UserController.logout'
 };
 
 

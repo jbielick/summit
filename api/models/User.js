@@ -12,7 +12,12 @@ module.exports = {
 			type: 'email',
 			required: true
 		},
-		password: 'STRING'
+		password: 'STRING',
+		toJSON: function() {
+			var data = this.toObject();
+			delete data.password;
+			return data;
+		}
 	},
 	beforeCreate: function(attrs, next) {
 		var bcrypt = require('bcrypt');
@@ -35,10 +40,5 @@ module.exports = {
 				next();
 			});
 		});
-	},
-	toJSON: function() {
-		var data = this.toObject();
-		delete data.password;
-		return data;
 	}
 };

@@ -25,12 +25,9 @@ module.exports = {
 					bcrypt.compare(req.body.password, user.password, function (err, match) {
 						if (err) return res.send(500);
 						if (match) {
-							user = user.toObject();
-							delete user.password;
-							req.session.user = user;
+							req.session.user = user.toJSON();
 							return res.redirect( req.session.loginRedirect || '/dashboard' )
 						} else {
-							if (req.session.user) req.session.user = false;
 							req.session.flash = 'Incorrect login';
 							return res.view();
 						}
@@ -43,6 +40,11 @@ module.exports = {
 		} else {
 			return res.view();
 		}
+	},
+	logout: function(req, res) {
+		delete req.session.user;
+		req.session.flash = 'Goodbye';
+		res.redirect('/');
 	},
 	_config: {}
 };
