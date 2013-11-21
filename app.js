@@ -87,6 +87,6 @@ require('sails').lift(null, function(err, sails) {
 	})();
 	
 	var pinger = new Ping(10);
-	pinger.start();
+	// pinger.start();
 	
 });

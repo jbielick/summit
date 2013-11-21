@@ -15,7 +15,7 @@ module.exports.session = {
   // Session secret is automatically generated when your new app is created
   // Replace at your own risk in production-- you will invalidate the cookies of your users,
   // forcing them to log in again. 
-  secret: 'c5ece9f2e330badf9d7f53bfc54886e8'
+  secret: 'c5ece9f2e330badf9d7f53bfc54886e8',
 
 
   // In production, uncomment the following lines to set up a shared redis session store
@@ -36,10 +36,10 @@ module.exports.session = {
 
   // Uncomment the following lines to use your Mongo adapter as a session store
   // adapter: 'mongo',
-  //
-  // host: 'localhost',
+  
+  // host: 'summit.fragmentlabs.com',
   // port: 27017,
-  // db: 'sails',
+  // db: 'summit_sails_dev',
   // collection: 'sessions',
   //
   // Optional Values:

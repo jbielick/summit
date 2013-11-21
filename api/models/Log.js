@@ -81,8 +81,10 @@ module.exports = {
 			if (!log.events) {
 				log.events = [];
 			}
-			
-			log.events.push(Log.createEvent('edited', user));
+
+			log.events.push(
+				Log.createEvent('edited', user)
+			);
 			
 			log.save(function(err) {
 				Log.publishUpdate(id, log.toJSON());
@@ -91,7 +93,7 @@ module.exports = {
 			
 		});
 	},
-	createEvent: function(action, user) {
+	createEvent: function(action, user, previous) {
 		return {
 			User: user,
 			action: action,

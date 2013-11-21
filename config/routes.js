@@ -6,14 +6,11 @@
 
 module.exports.routes = {
 	'/': {
-		view				: 'home/index'
+		view			: 'home/index'
 	},
-	'/dashboard': {
-		controller		: 'PageController',
-		action			: 'dashboard'
-	},
+	'/dashboard'		: 'LogController.feed',
 	'post /logs'		: 'LogController.add',
-	'/login'				: 'UserController.login',
+	'/login'			: 'UserController.login',
 	'/logout' 			: 'UserController.logout'
 };
 

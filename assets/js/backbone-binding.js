@@ -18,24 +18,24 @@ _.mixin({
 		return context.set
 	},
 	_parseModel: function(el, returnInputs) {
-		var model = {},
-			$el = $(el),
-			_flattenedDOM = {},
-			_flattened = {},
-			inputs = $el.is('form') ? $el.prop('elements') : $el.find('[name]'),
-			obj, obj2, name, idxd
+		// var model = {},
+		// 	$el = $(el),
+		// 	_flattenedDOM = {},
+		// 	_flattened = {},
+		// 	inputs = $el.is('form') ? $el.prop('elements') : $el.find('[name]'),
+		// 	obj, obj2, name, idxd
 
-		for (var i = 0; i < inputs.length; i++) {
-			name = inputs[i].getAttribute('name')
-			if (name && inputs[i].type !== 'submit') {
-				if (!inputs[name].tagName && inputs[name].length > 1)
-					name = name.replace(/\[.{0}\]/g, function() {return '['+Array.prototype.slice.apply(inputs[name]).indexOf(inputs[i])+']'})
-				if(inputs[i].type === 'file' && inputs[i].value !== '')
-					r.files.push(inputs[i])
-				_flattenedDOM[name] = inputs[i]
-				_flattened[name] = $(inputs[i]).val()
-			}
-		}
+		// for (var i = 0; i < inputs.length; i++) {
+		// 	name = inputs[i].getAttribute('name')
+		// 	if (name && inputs[i].type !== 'submit') {
+		// 		if ()
+		// 			(!inputs[name].tagName && inputs[name].length > 1) {
+		// 			name = name.replace(/\[.{0}\]/g, function() {return '['+Array.prototype.slice.apply(inputs[name]).indexOf(inputs[i])+']'})
+		// 		}
+		// 		_flattenedDOM[name] = inputs[i]
+		// 		_flattened[name] = $(inputs[i]).val()
+		// 	}
+		// }
 		if (returnInputs) {
 			model.get = function(path) {
 				var input =  _.get(model.controls, path)
