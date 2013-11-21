@@ -24,6 +24,7 @@
 		<pre>
 			<?= Log.data ?>
 		</pre>
-		<select></select>
-		<small><pre>Assigned To</pre></small>
+		<%- sails.Form.create('Log', {'class': 'form-inline'}) %>
+		<%- sails.Form.input('assignedTo', {options: users, empty: 'Assign To', label: false}) %>
+		<%- sails.Form.end() %>
 	</div>

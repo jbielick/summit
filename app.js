@@ -1,6 +1,8 @@
 require('sails').lift(null, function(err, sails) {
 	sails.LIVE_SITE = false;
 
+	sails.Form = require('sails-form');
+
 	// Find all sites with urls, set interval to loop over all, make http request to them
 	// and unshift the result to the top of the array of status codes for that site in the DB.
 	// if a site returns greater than a 200 response, we check if the response before that one was also not equal to 
