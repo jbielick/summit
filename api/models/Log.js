@@ -2,7 +2,10 @@ module.exports = {
 	schema: true,
 	attributes: {
 		Site: 'json',
-		assignedTo: 'json',
+		User: {
+			type: 'json',
+			defaultsTo: {}
+		},
 		events: {
 			type: 'array',
 			defaultsTo: []

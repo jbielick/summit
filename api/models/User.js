@@ -8,11 +8,17 @@
 
 module.exports = {
 	attributes: {
+		first_name: 'string',
+		last_name: 'string',
+		full_name: function() {
+			return this.first_name+' '+this.last_name;
+		},
 		email: {
 			type: 'email',
 			required: true
 		},
-		password: 'STRING',
+		basecamp_id: 'integer',
+		password: 'string',
 		toJSON: function() {
 			var data = this.toObject();
 			delete data.password;
