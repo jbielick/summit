@@ -25,6 +25,16 @@ module.exports = {
 			return data;
 		}
 	},
+	findList: function(cb) {
+		User.find().exec(function(err, rawUsers) {
+			if (err) return cb(err);
+			users = {};
+			_.each(rawUsers, function(v, k) {
+				users[v.id] = v.email;
+			});
+			cb(null, users);
+		});
+	},
 	beforeCreate: function(attrs, next) {
 		var bcrypt = require('bcrypt');
 		bcrypt.genSalt(10, function(err, salt) {

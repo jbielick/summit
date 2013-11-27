@@ -30,16 +30,7 @@ module.exports = {
 			Log.subscribe(req.socket, logs);
 
 			// find some users to populate assignee menus
-			User.find().exec(function(err, rawUsers) {
-				if (err) return res.send(500, err);
-				
-				users = {};
-
-				_.each(rawUsers, function(v, k) {
-					users[v.id] = v.email;
-				});
-
-				// finally, render the view
+			User.findList(function(err, users) {
 				res.view({logs: logs, users: users});
 			});
 		});
