@@ -14,7 +14,6 @@ module.exports = {
 		uri: 'string',
 		data: 'string',
 		severity: 'string',
-		site_id: 'string',
 		closed: {
 			type: 'boolean',
 			defaultsTo: false
