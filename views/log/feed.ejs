@@ -32,17 +32,20 @@
 	var logs = new App.Collection.Log(),
 		$content = $('.content'), socket = io.connect()
 
+	logs.view = (new (Backbone.View.extend()));
+
 	logs.url = '/logs/feed?closed=false';
 
 	logs.on('reset', function(collection, model) {
-		$content.empty()
+		logs.view.$el.empty();
 		_.each(collection.models, function(model) {
-			$(new App.View.Log({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).appendTo($content)
-		})
+			$(new App.View.Log({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).appendTo(logs.view.$el)
+		});
+		$content.html(logs.view.$el);
 	});
 
 	logs.on('add', function(model, collection) {
-		$(new App.View.Log({template:  _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).prependTo($content)
+		$(new App.View.Log({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).prependTo($content)
 	});
 
 	logs.on('remove', function(model, collection) {
