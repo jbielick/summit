@@ -12,8 +12,8 @@ module.exports = {
 		},
 		host: 'string',
 		uri: 'string',
+		type: 'string',
 		data: 'string',
-		severity: 'string',
 		closed: {
 			type: 'boolean',
 			defaultsTo: false
