@@ -48,6 +48,8 @@ module.exports = {
 		});
 	},
 	add: function(req, res) {
+		console.log('===============Req Body==============');
+		console.log(JSON.stringify(req.body));
 		Log.createOrAppendChild(req, res, function(err, model) {
 			if (err) return console.log(err);
 			res.json(model);
