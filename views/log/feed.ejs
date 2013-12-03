@@ -5,7 +5,7 @@
 	<div class="col-xs-9">
 		<div class="row">
 			<div class="col-xs-12 well">
-				<a href="javascript:void(0)" class="btn btn-default" onclick="logs.url = '/logs'; logs.fetch({reset:true})">All Logs</a>
+				<a href="javascript:void(0)" class="btn btn-default" onclick="logs.url = '/logs'; logs.fetch({reset:true})">Open and Closed Logs</a>
 				<a href="javascript:void(0)" class="btn btn-default" onclick="logs.url = '/logs?closed=false'; logs.fetch({reset:true})">Open Logs</a>
 			</div>
 		</div>
@@ -32,7 +32,7 @@
 	var logs = new App.Collection.Log(),
 		$content = $('.content'), socket = io.connect()
 
-	logs.url = '/logs/feed?closed=false';
+	logs.url = '?closed=false';
 
 	logs.on('reset', function(collection, model) {
 		$content.empty()

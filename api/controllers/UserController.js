@@ -26,7 +26,7 @@ module.exports = {
 						if (err) return res.send(500);
 						if (match) {
 							req.session.user = user.toJSON();
-							return res.redirect( req.session.loginRedirect || '/dashboard' )
+							return res.redirect( req.session.loginRedirect || '/feed' )
 						} else {
 							req.session.flash = 'Incorrect login';
 							return res.view();

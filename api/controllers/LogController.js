@@ -2,6 +2,8 @@ module.exports = {
 	_config: {},
 	feed: function(req, res) {
 
+		var Hash = require('hashjs');
+
 		// subscribe req socket to create events on this model
 		Log.subscribe(req.socket);
 
@@ -15,8 +17,12 @@ module.exports = {
 		}
 
 		// if url param 'closed' is set, use it to filter
-		if (options.closed) {
+		if (params.closed) {
 			options.where = {closed: Boolean(options.closed)};
+		}
+
+		if (params.type) {
+			options.where = {type: params.type};
 		}
 
 		Log
@@ -31,7 +37,13 @@ module.exports = {
 
 			// find some users to populate assignee menus
 			User.findList(function(err, users) {
-				res.view({logs: logs, users: users});
+				// get list of types to filter streams
+				Log.native(function(err, coll) {
+					if (err) return res.send(500);
+					coll.distinct('type', function(err, types) {
+						res.view({logs: logs, users: users, types: types});
+					});
+				});
 			});
 		});
 	},

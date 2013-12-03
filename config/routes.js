@@ -8,7 +8,7 @@ module.exports.routes = {
 	'/': {
 		view			: 'home/index'
 	},
-	'/dashboard'		: 'LogController.feed',
+	'/feed'				: 'LogController.feed',
 	'post /logs'		: 'LogController.add',
 	'/login'			: 'UserController.login',
 	'/logout' 			: 'UserController.logout'

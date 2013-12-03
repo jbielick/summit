@@ -1,2 +1,15 @@
-<a href="/dashboard">Dashboard</a>
-<br>
+<h3>Stream</h3>
+<div class="list-group">
+	<a href="/feed" class="list-group-item<%- req.param('type') === undefined ? ' active' : '' %>">All</a>
+<%
+	_.each(types, function(type, i) {
+		var activeClass = null;
+		if (req.param('type') === type) {
+			activeClass = ' active';
+		}
+%>
+	<a href="?type=<%-type%>" class="list-group-item<%- activeClass || '' %>"><%- type.substr(0, 1).toUpperCase()+type.substr(1) %></a>
+<%
+	})
+%>
+</div>

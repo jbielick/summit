@@ -33,25 +33,19 @@ module.exports = {
 	},
 	update: function(req, res) {
 		if (req.method.toLowerCase() === 'post') {
-			Site.update({id: req.body.id}, req.body, function(err, sites) {
+			console.log(req.body);
+			Site.update({id: req.body.Site.id}, req.body.Site, function(err, sites) {
 				if (err) return console.log(err);
 				req.session.flash = 'The site was saved successfully';
-				req.body = sites[0].toJSON();
+				req.body.Site = sites[0].toJSON();
 				res.view();
 			});
 		} else {
 			Site.findOne(req.param('id'), function(err, site) {
 				if (err || !site) throw err;
-				console.log(site);
-				// Project.findOne({basecamp_id: site.basecamp_id}, function(err, project) {
-				// 	if (err) throw err;
-				// 	if (project) {
-				// 		site.Project = project;
-				// 	}
-				// 	req.body = site;
-				// 	res.view();
-				// })
-			})
+				req.body.Site = site.toJSON();
+				res.view();
+			});
 		}
 	}
 };

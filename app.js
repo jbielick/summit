@@ -1,4 +1,5 @@
 require('sails').lift(null, function(err, sails) {
+
 	sails.LIVE_SITE = false;
 
 	sails.Form = require('sails-form');
@@ -81,7 +82,7 @@ require('sails').lift(null, function(err, sails) {
 			Site.update({id: site._id}, {status: site.status}, function(err, sites) {
 				if (err) console.log(err); 
 				Site.publishUpdate(sites[0].id, sites[0].toJSON());
-				// TODO yeah, you probably shouldn't socket.io 17K subdocuments every 10 seconds
+				// TODO yeah, you probably shouldn't socket.io publishUpdate 17K subdocuments every 10 seconds
 				// limit the pubsub to most recent and only push into arrays. /sites/overview
 			});
 		}
@@ -89,6 +90,6 @@ require('sails').lift(null, function(err, sails) {
 	})();
 	
 	var pinger = new Ping(10);
-	// pinger.start();
+	pinger.start();
 	
 });
