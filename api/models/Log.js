@@ -103,3 +103,7 @@ module.exports = {
 		};
 	}
 };
+
+// db.log.update({}, {'$unset': {site_id: ''}}, {multi: true});
+// db.log.remove({'Site': {'$exists': false}}, false);
+// db.log.remove({'Site': null}, false);

@@ -35,7 +35,7 @@ module.exports = {
 			// subscribe req socket to updates on the found models
 			Log.subscribe(req.socket, logs);
 
-			// find some users to populate assignee menus
+			// find all users to populate assignee select input
 			User.findList(function(err, users) {
 				// get list of types to filter streams
 				Log.native(function(err, coll) {
