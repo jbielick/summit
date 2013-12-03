@@ -37,6 +37,9 @@ App.View.Log = Backbone.View.extend({
 	},
 	dismiss: function(e) {
 		this.model.save({closed: true}, {wait: true});
+		this.$el.fadeOut(400, function() {
+			this.remove();
+		}).slideUp(400);
 		return false;
 	},
 	render: function(options) {
