@@ -17,6 +17,7 @@ require('sails').lift(null, function(err, sails) {
 		function Scout(period) {
 			this.period = period * 1000;
 			this.http = require('http');
+			this.alerts = {};
 			this.https = require('https');
 			this.nodemailer = require("nodemailer");
 		}
@@ -57,7 +58,7 @@ require('sails').lift(null, function(err, sails) {
 				&& Math.floor( res.statusCode / 100 ) !== 2
 				&& Math.floor( (site.status[0].code + site.status[1].code) / 100 ) !== 4
 			) {
-				if (!_this.alerts[site.id]) {
+				if (!_this.alerts[site._id]) {
 					sendmail = _this.nodemailer.createTransport('Sendmail');
 					html = '<b>Server Status Alert: </b><br><hr><br>Last three status codes for '+site.name+' were '+
 							'<b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>, <b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>, and <b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>';
@@ -71,14 +72,14 @@ require('sails').lift(null, function(err, sails) {
 					mailOptions.to = sails.LIVE_SITE ? 'josh@fragmentlabs.com,brian@fragmentlabs.com' : 'josh@fragmentlabs.com';
 					
 					sendmail.sendMail(mailOptions, function(error, response){
-						_this.alerts[site.id] = true;
+						_this.alerts[site._id] = true;
 						console.log(error, response);
 					});
 				} else {
 					//pass over, an alert has already been sent.
 				}
 			} else {
-				_this.alerts[site.id] = false;
+				_this.alerts[site._id] = false;
 			}
 
 			site.status.push({
