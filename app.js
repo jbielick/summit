@@ -12,30 +12,30 @@ require('sails').lift(null, function(err, sails) {
 	// 
 	// while we're unshifting items, we shift any status array with over 100 subdocuments until its length is === 100
 
-	var Ping = (function() {
+	var Scout = (function() {
 		
-		function Ping(period) {
+		function Scout(period) {
 			this.period = period * 1000;
 			this.http = require('http');
 			this.https = require('https');
 			this.nodemailer = require("nodemailer");
 		}
 		
-		Ping.prototype.start = function() {
+		Scout.prototype.start = function() {
 			var _this = this;
-			this.interval = setInterval(function pingServers() {
+			this.interval = setInterval(function ScoutServers() {
 				Site.native(function(err, collection) {
 					collection.find({
 						url: {'$exists': true, '$ne': ''}, 
 						protocol: {'$exists': true, '$ne': ''}
 					}).toArray(function(err, sites) {
-							_.each(sites, function pingSite(site) {
+							_.each(sites, function ScoutSite(site) {
 								var requester = site.protocol === 'https://' ? _this.https : _this.http;
 								requester.get(site.protocol+site.url, function(res) {
 									_this.processResponse(site, res)
 								}).on('error', function(e) {
 									_this.processResponse(site, {statusCode: 0}, e);
-									console.log(new Date().toLocaleString()+' '+site.url+' ====Ping Error===');
+									console.log(new Date().toLocaleString()+' '+site.url+' ====Scout Error===');
 									console.log(e);
 								})
 							});
@@ -44,29 +44,41 @@ require('sails').lift(null, function(err, sails) {
 			}, this.period);
 		};
 		
-		Ping.prototype.processResponse = function(site, res, e) {
-			var _this = this;
+		Scout.prototype.processResponse = function(site, res, e) {
+
+			var _this = this,
+				sendmail,
+				html,
+				mailOptions;
+
 			if (
 				site.status 
 				&& site.status.length > 1
 				&& Math.floor( res.statusCode / 100 ) !== 2
 				&& Math.floor( (site.status[0].code + site.status[1].code) / 100 ) !== 4
 			) {
-				var sendmail = _this.nodemailer.createTransport('Sendmail');
-				var html = '<b>Server Status Alert: </b><br><hr><br>Last three status codes for '+site.name+' were '+
-								'<b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>, <b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>, and <b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>';
-				var mailOptions = {
-					from: 'Summit <no-reply@summit.fragmentlabs.com>',
-					to: 'josh@fragmentlabs.com',
-					subject: 'Server Status Alert',
-					html: html
-				};
-				
-				mailOptions.to = sails.LIVE_SITE ? 'josh@fragmentlabs.com' : 'josh@fragmentlabs.com';
-				
-				sendmail.sendMail(mailOptions, function(error, response){
-					console.log(error, response);
-				});
+				if (!_this.alerts[site.id]) {
+					sendmail = _this.nodemailer.createTransport('Sendmail');
+					html = '<b>Server Status Alert: </b><br><hr><br>Last three status codes for '+site.name+' were '+
+							'<b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>, <b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>, and <b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>';
+					mailOptions = {
+						from: 'Summit <no-reply@summit.fragmentlabs.com>',
+						to: 'josh@fragmentlabs.com',
+						subject: 'Server Status Alert',
+						html: html
+					};
+
+					mailOptions.to = sails.LIVE_SITE ? 'josh@fragmentlabs.com,brian@fragmentlabs.com' : 'josh@fragmentlabs.com';
+					
+					sendmail.sendMail(mailOptions, function(error, response){
+						_this.alerts[site.id] = true;
+						console.log(error, response);
+					});
+				} else {
+					//pass over, an alert has already been sent.
+				}
+			} else {
+				_this.alerts[site.id] = false;
 			}
 
 			site.status.push({
@@ -86,10 +98,10 @@ require('sails').lift(null, function(err, sails) {
 				// limit the pubsub to most recent and only push into arrays. /sites/overview
 			});
 		}
-		return Ping;
+		return Scout;
 	})();
 	
-	var pinger = new Ping(10);
-	// pinger.start();
+	var scout = new Scout(60);
+	scout.start();
 	
 });

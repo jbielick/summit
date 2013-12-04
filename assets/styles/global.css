@@ -4,7 +4,7 @@
 .navbar-brand {padding-left:80px;position:relative;}
 .logo {max-height:30px;width:auto;position:absolute;top:12px;left:0px;}
 
-.log pre {margin:0;padding:8px;font-size:11px;}
+.log pre {margin:0;padding:8px;font-size:11px;text-indent:-170px;}
 .log.panel .panel-body {padding:6px;}
 .log.panel .panel-title {font-size:12px;}
 
