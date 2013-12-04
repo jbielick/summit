@@ -8,7 +8,9 @@ module.exports = {
 		Log.subscribe(req.socket);
 
 		var params = req.params.all();
-		var options = {};
+		var options = {
+			where: {}
+		};
 
 		// if sort param is given
 		if (params.sort) {
@@ -25,9 +27,15 @@ module.exports = {
 			options.where = {type: params.type};
 		}
 
+		if (params.closed !== 'undefined') {
+			options.where.closed = false;
+		} else {
+			options.where.closed = params.closed;
+		}
+
 		Log
 		.find()
-		.where(options.where || {closed: false})
+		.where(options.where)
 		.sort(options.sort || {updatedAt: -1})
 		.exec(function(err, logs) {
 			if (err) return res.json(err);
