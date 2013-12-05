@@ -27,6 +27,10 @@ module.exports = {
 			options.where = {type: params.type};
 		}
 
+		if (params['Site.name']) {
+			options.where = {'Site.name': params['Site.name']};
+		}
+
 		if (params.closed !== 'undefined') {
 			options.where.closed = false;
 		} else {
