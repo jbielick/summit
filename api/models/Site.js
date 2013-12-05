@@ -34,5 +34,15 @@ module.exports = {
 			delete data.status;
 			return data;
 		}
+	},
+	findList: function(where, cb) {
+		Site.find(where || {}).exec(function(err, rawSites) {
+			if (err) return cb(err);
+			var sites = {};
+			_.each(rawSites, function(v, k) {
+				sites[v.id] = v.name;
+			});
+			cb(null, sites);
+		});
 	}
 };

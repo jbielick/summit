@@ -10,6 +10,10 @@ module.exports = {
 			type: 'array',
 			defaultsTo: []
 		},
+		comments: {
+			type: 'string',
+			defaultsTo: ''
+		},
 		host: 'string',
 		uri: 'string',
 		type: 'string',

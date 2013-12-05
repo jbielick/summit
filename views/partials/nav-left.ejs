@@ -1,4 +1,4 @@
-<h3>Stream</h3>
+<h3>Streams</h3>
 <div class="list-group">
 	<a href="/feed" class="list-group-item<%- req.param('type') === undefined ? ' active' : '' %>">All</a>
 <%
@@ -7,8 +7,27 @@
 		if (req.param('type') === type) {
 			activeClass = ' active';
 		}
+		var url = req.query['Site.name'] ? req.path+'?Site.name='+req.query['Site.name']+'&type='+type : req.path+'?type='+type;
+
 %>
-	<a href="?type=<%-type%>" class="list-group-item<%- activeClass || '' %>"><%- type.substr(0, 1).toUpperCase()+type.substr(1) %></a>
+	<a href="<%- url %>" class="list-group-item<%- activeClass || '' %>"><%- type.substr(0, 1).toUpperCase()+type.substr(1) %></a>
+<%
+	})
+%>
+</div>
+<h3>Sites</h3>
+<div class="list-group">
+	<a href="/feed" class="list-group-item<%- req.param('Site.name') === undefined ? ' active' : '' %>">All</a>
+<%
+	_.each(sites, function(site, i) {
+		var activeClass = null;
+		if (req.param('Site.name') === site) {
+			activeClass = ' active';
+		}
+		var url = req.query.type ? req.path+'?type='+req.query.type+'&Site.name='+site : req.path+'?Site.name='+site;
+
+%>
+	<a href="<%- url %>" class="list-group-item<%- activeClass || '' %>"><%- site.substr(0, 1).toUpperCase()+site.substr(1) %></a>
 <%
 	})
 %>

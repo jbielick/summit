@@ -45,19 +45,22 @@ module.exports = {
 
 			// find all users to populate assignee select input
 			User.findList(function(err, users) {
-				// get list of types to filter streams
+
 				Log.native(function(err, coll) {
 					if (err) return res.send(500);
-					coll.distinct('type', function(err, types) {
-						res.view({logs: logs, users: users, types: types});
+					// get sites list for left-nav
+					coll.distinct('Site.name', function(err, sites) {
+						if (err) return res.send(500);
+						// get list of types to filter streams
+						coll.distinct('type', function(err, types) {
+							res.view({logs: logs, users: users, types: types, sites: sites});
+						});
 					});
 				});
 			});
 		});
 	},
 	add: function(req, res) {
-		console.log('===============Req Body==============');
-		console.log(JSON.stringify(req.body));
 		Log.createOrAppendChild(req, res, function(err, model) {
 			if (err) return console.log(err);
 			res.json(model);
