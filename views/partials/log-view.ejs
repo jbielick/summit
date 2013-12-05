@@ -1,3 +1,13 @@
+<?
+	var logClasses = {
+		error	: 'panel-danger',
+		notice	: 'panel-default', 
+		warning : 'panel-warning',
+		authnet	: 'panel-success',
+		info	: 'panel-primary'
+	};
+?>
+<div class="panel log slide-up <?=logClasses[Log.type] || 'panel-default'?>">
 	<div class="panel-heading">
 		<h3 class="panel-title">
 <?
@@ -28,3 +38,4 @@
 		<% sails.Form.input('User', {options: users, empty: 'Assign To', label: false}) %>
 		<% sails.Form.end() %>
 	</div>
+</div>

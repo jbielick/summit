@@ -3,9 +3,6 @@
  *=====================================*/
  
 App.View.Log = Backbone.View.extend({
-	attributes: {
-		'class': 'panel panel-danger slide-up log'
-	},
 	initialize: function(options) {
 		if (options && options.model && options.model instanceof Backbone.RelationalModel) {
 			this.template = options.template;
