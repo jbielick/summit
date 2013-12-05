@@ -7,7 +7,7 @@
 		info	: 'primary'
 	};
 ?>
-<div class="panel log slide-up panel-<?=logClasses[Log.type] || 'panel-default'?>">
+<div class="panel log slide-up panel-<?=logClasses[Log.type] || 'default'?>">
 	<div class="panel-heading">
 		<h3 class="panel-title">
 			<?= Log.child_count ? '<span class="badge badge-'+(logClasses[Log.type] || 'default')+'">'+(Log.child_count+1)+'</span>' : '' ?>
