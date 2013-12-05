@@ -34,6 +34,7 @@
 		<pre>
 			<?= Log.data ?>
 		</pre>
+		<small>Type: <?=Log.type?> id: <?=Log.id?></small>
 		<% sails.Form.create('Log', {'class': 'form-inline', data: Log}) %>
 		<% sails.Form.input('User', {options: users, empty: 'Assign To', label: false}) %>
 		<% sails.Form.end() %>
