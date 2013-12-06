@@ -56,7 +56,7 @@ module.exports = {
 					coll.distinct('Site.name', function(err, sites) {
 						if (err) return res.send(500);
 						// get list of types to filter streams
-						coll.distinct('type', function(err, types) {
+						coll.distinct('type', {closed: false}, function(err, types) {
 							res.view({logs: logs, users: users, types: types, sites: sites});
 						});
 					});
