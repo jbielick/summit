@@ -18,23 +18,18 @@ module.exports = {
 			options.sort[params.sort] = Number(params.direction) || 1;
 		}
 
-		// if url param 'closed' is set, use it to filter
-		if (params.closed) {
-			options.where = {closed: Boolean(options.closed)};
-		}
-
 		if (params.type) {
-			options.where = {type: params.type};
+			options.where.type = params.type;
 		}
 
 		if (params['Site.name']) {
-			options.where = {'Site.name': params['Site.name']};
+			options.where['Site.name'] = params['Site.name'];
 		}
 
 		if (params.closed !== 'undefined') {
 			options.where.closed = false;
 		} else {
-			options.where.closed = params.closed;
+			options.where.closed = Boolean(params.closed);
 		}
 
 		Log
