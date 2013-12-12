@@ -1,6 +1,6 @@
 define([
-	'views/Flash',
-	'views/Modal',
+	'views/flash',
+	'views/modal',
 	'Session',
 	'Helper'
 ], function(Flash, Modal, Session, Helper) {
