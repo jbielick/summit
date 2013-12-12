@@ -3,7 +3,7 @@ define([
 	'underscore',
 	'backbone',
 	'Helper',
-	'models/Flash'
+	'models/flash'
 ],
 function($, _, Backbone, Helper, FlashModel) {
 

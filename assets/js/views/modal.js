@@ -3,7 +3,7 @@ define([
 	'underscore',
 	'backbone',
 	'bootstrap',
-	'models/Modal',
+	'models/modal',
 	'Helper',
 	'text!/js/templates/modal.html'
 ],
