@@ -37,9 +37,27 @@
 		<pre>
 			<?= Log.data ?>
 		</pre>
-		<div>
-			<small>URI: <strong><?= Log.uri || 'n/a' ?></strong></small>
-			<small>ID: <strong><?= Log.id ?></strong></small>
+		<div class="row">
+			<div class="col-xs-6 text-left">
+				<small>URI: <strong><?= Log.uri || 'n/a' ?></strong></small>
+				<small>ID: <strong><?= Log.id ?></strong></small>
+			</div>
+			<div class="col-xs-6 text-right">
+<?
+				if (Log.notes) {
+?>
+				<a href="javascript:void(0)" data-toggle="notes">Open Notes</a>
+<?
+				} else {
+?>
+				<a href="javascript:void(0)" data-toggle="notes">Add Notes</a>
+<?
+				}
+?>
+			</div>
+		</div>
+		<div class="notes" hidden>
+			<textarea class="form-control" name="notes"><?= Log.notes || '' ?></textarea>
 		</div>
 	</div>
 </div>

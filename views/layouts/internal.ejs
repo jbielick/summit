@@ -10,20 +10,33 @@
 	<script type="text/javascript" src="/js/sails.io.js"></script>
 	<script type="text/javascript" src="/js/jquery.1.9.1.js"></script>
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/js/Hash.js"></script>
-	<script type="text/javascript" src="/js/underscore.js"></script>
-	<script type="text/javascript" src="/js/backbone.js"></script>
-	<script type="text/javascript" src="/js/backbone-relational.js"></script>
-	<script type="text/javascript" src="/js/backbone-binding.js"></script>
-	<script type="text/javascript" src="/js/app.js"></script>
-	<script type="text/javascript" src="/js/Models.js"></script>
-	<script type="text/javascript" src="/js/Collections.js"></script>
-	<script type="text/javascript" src="/js/Views.js"></script>
 	<script type="text/javascript" src="/js/raphael.js"></script>
+	<script type="text/javascript" src="/js/require.js"></script>
+	<script type="text/javascript">
+		require.config({
+			baseUrl: '/js',
+			paths: {
+				bootstrap				: '/js/bootstrap.min',
+				jquery 					: '/js/jquery.1.9.1',
+				hash 					: '/js/Hash',
+				global 					: '/js/global',
+				slides 					: '/js/jquery.slides.min',
+				'backbone-relational'	: '/js/backbone-relational'
+			},
+			shim: {
+				backbone: {deps: ['underscore', 'jquery', 'hash'], exports: 'Backbone'},
+				underscore: {exports: '_'},
+				hash: {exports: 'H'},
+				bootstrap: {deps: ['jquery'], exports: '$'},
+				'backbone-relational': {deps: ['backbone']},
+				'backbone-binding': {deps: ['underscore', 'backbone']}
+			}
+		});
+	</script>
 	</head>
 	<body>
 		<script type="text/javascript" charset="utf-8">
-		App.Auth.User = <%- JSON.stringify(req.session.user) %>;
+			User = <%- JSON.stringify(req.session.user) %>;
 		</script>
 		<%- partial('../partials/nav') %>
 <%

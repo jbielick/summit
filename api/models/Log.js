@@ -10,7 +10,7 @@ module.exports = {
 			type: 'array',
 			defaultsTo: []
 		},
-		comments: {
+		notes: {
 			type: 'string',
 			defaultsTo: ''
 		},

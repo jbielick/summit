@@ -68,7 +68,7 @@ module.exports = {
 	update: function(req, res) {
 		Log.updateWithEvent(req.param('id'), req.body, req.session.user, function(err, log) {
 			if (err || !log) {
-				console.log(err); 
+				console.log(err);
 				return res.send(404);
 			}
 			res.json(log);

@@ -17,62 +17,63 @@
 	<%- partial('../partials/log-view') %>
 </script>
 
-<script type="text/template" id="ProjectViewTemplate">
-	<%- partial('../partials/project-view') %>
-</script>
-
 <script type="text/javascript" charset="utf-8">
+	
+	require(['jquery', 'backbone', 'collections/log', 'models/feed', 'views/log', 'Router'], function($, Backbone, LogCollection, FeedUIModel, LogView, Router) {
+		var logs = new LogCollection(),
+			$content = $('.content'), socket = io.connect(),
+			feedModel = new FeedUIModel(<%- JSON.stringify(req.params.all()) %>);
 
-	var logs = new App.Collection.Log(),
-		$content = $('.content'), socket = io.connect()
+		window.router = Router;
 
-	logs.view = (new (Backbone.View.extend()));
+		logs.view = (new (Backbone.View.extend()));
 
-	logs.url = '/logs/feed?closed=false';
+		logs.url = '/logs/feed';
 
-	logs.on('reset', function(collection, model) {
-		logs.view.$el.empty();
-		_.each(collection.models, function(model) {
-			$(new App.View.Log({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).appendTo(logs.view.$el)
+		logs.on('reset', function(collection, model) {
+			logs.view.$el.empty();
+			_.each(collection.models, function(model) {
+				$(new LogView({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).appendTo(logs.view.$el)
+			});
+			$content.html(logs.view.$el);
 		});
-		$content.html(logs.view.$el);
-	});
 
-	logs.on('add', function(model, collection) {
-		$(new App.View.Log({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).prependTo($content)
-	});
+		logs.on('add', function(model, collection) {
+			$(new LogView({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).prependTo($content)
+		});
 
-	logs.on('remove', function(model, collection) {
-		model.view.remove()
-	});
+		logs.on('remove', function(model, collection) {
+			model.view.remove()
+		});
 
-	socket.on('connect', function socketConnected() {
-		socket.on('message', function messageReceived(message) {
-			if (message.verb === 'create') {
-				logs.add(message.data)
-			} else if (message.verb === 'update') {
-				if (logs.get(message.data.id)) {
-					logs.get(message.data.id).set(message.data)
+		socket.on('connect', function socketConnected() {
+			socket.on('message', function messageReceived(message) {
+				if (message.verb === 'create') {
+					logs.add(message.data)
+				} else if (message.verb === 'update') {
+					if (logs.get(message.data.id)) {
+						logs.get(message.data.id).set(message.data)
+					}
 				}
+			});
+		});
+
+		logs.on('change', function(model) {
+			var removed, changed;
+			if (model.get('closed') && logs.url === '/logs/open') {
+				logs.remove(model);
+				model.view.remove();
+			} else {
+				model.view.render({animate: false});
+			}
+			if (!model.get('closed') && model.previous('closed')) {
+				logs.add(model);
 			}
 		});
+
+		logs.reset(<%- JSON.stringify(logs) %>);
+
+		socket.get('/feed', {}, function(response) {});
 	});
-
-	logs.on('change', function(model) {
-		var removed, changed;
-		if (model.get('closed') && logs.url === '/logs/open') {
-			logs.remove(model);
-			model.view.remove();
-		} else {
-			model.view.render();
-		}
-		if (!model.get('closed') && model.previous('closed')) {
-			logs.add(model);
-		}
-	});
-
-	logs.reset(<%- JSON.stringify(logs) %>);
-
-	socket.get('/feed', {}, function(response) {});
 
 </script>

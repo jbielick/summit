@@ -272,15 +272,13 @@ _.mixin({
 
 _.extend(Backbone.Model.prototype, {
 	bindView: function(view) {
-		var _this = this
-		this.view = view
+		var _this = this;
+		this.view = view;
 		_this.on('change', function(model) {
-			var changedFlat = _._flatten(_this.beforeRender(model.changedAttributes()))
-			_this._inject.call(this.view, changedFlat)
-		})
-		if (!view.events) {
-			view.events = {}
-		}
+			var changedFlat = _._flatten(_this.beforeRender(model.changedAttributes()));
+			_this._inject.call(this.view, changedFlat);
+		});
+		view.events = view.events || {};
 		_.extend(view.events, {
 			// 'click *[type="submit"]': function(e) {
 // 				e.preventDefault()
@@ -296,29 +294,30 @@ _.extend(Backbone.Model.prototype, {
 			'change *[name]': function(e) {
 				_this._set(e, this)
 			}
-		})
+		});
 		return _this;
 	},
 	_set: function(e, view) {
-		var tokens = _._tokenize(e.target.getAttribute('name')), val = $(e.target).val(), ob
+		var tokens = _._tokenize(e.target.getAttribute('name')), val = $(e.target).val(), ob;
 		if (tokens[0] === this.alias) {
-			tokens.shift()
+			tokens.shift();
 		}
 		_._insert(view.model, tokens.join('.'), $(e.target).val(), {silent: true});
 		view.model.trigger('input');
 	},
-	_inject: function(changed, view) {
-		var $view = this.$el || $(this.el)
+	_inject: function(changed) {
+		if (this.lockBinding) return this;
+		var $view = this.$el || $(this.el);
 		_.each(changed, function(v, k) {
-			var $binded = this.$('[name="'+k+'"]')
+			var $binded = this.$('[name="'+k+'"]');
 			if ($binded.is('input, textarea, select')) {
-				$binded.val(v)
+				$binded.val(v);
 			} else {
-				$binded.text(v)
+				$binded.text(v);
 			}
-		})
+		});
 	},
 	beforeRender: function(changed) {
-		return changed
+		return changed;
 	}
 })
