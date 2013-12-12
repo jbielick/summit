@@ -1,0 +1,25 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title"><?= Content.title ?></h4>
+		</div>
+		<div class="modal-body">
+			<p><?= Content.body ?></p>
+		</div>
+		<div class="modal-footer">
+			<?
+				if (Content.cancel) {
+			?>
+			<button type="button" class="btn btn-default" data-dismiss="modal" data-behavior="dismiss"><?= Content.cancel ?></button>
+			<?
+				}
+				if (Content.action) {
+			?>
+			<button type="button" class="btn btn-secondary" data-behavior="action" data-dismiss="modal"><?= Content.action ?></button>
+			<?
+				}
+			?>
+		</div>
+	</div>
+</div>
