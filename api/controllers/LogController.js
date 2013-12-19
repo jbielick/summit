@@ -9,7 +9,9 @@ module.exports = {
 
 		var params = req.params.all();
 		var options = {
-			where: {}
+			where: {
+				closed: false
+			}
 		};
 
 		// if sort param is given
@@ -36,7 +38,7 @@ module.exports = {
 		.find()
 		.where(options.where)
 		.sort(options.sort || {updatedAt: -1})
-		.limit(params.limit || 25)
+		.limit(params.limit || 5)
 		.skip(params.skip || 0)
 		.exec(function(err, logs) {
 			if (err) return res.json(err);
@@ -54,7 +56,7 @@ module.exports = {
 						if (err) return res.send(500);
 						// get list of types to filter streams
 						coll.distinct('type', {closed: false}, function(err, types) {
-							if (req.isJsony) {
+							if (req.wantsJSON) {
 								res.json(logs);
 							} else {
 								res.view({logs: logs, users: users, types: types, sites: sites});

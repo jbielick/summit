@@ -56,13 +56,11 @@ function($, _, Backbone) {
 			});
 		},
 		open: function(e) {
-
+			
 		},
 		dismiss: function(e) {
 			this.model.save({closed: true}, {wait: true});
-			this.$el.fadeOut(400, function() {
-				this.remove();
-			}).slideUp(200);
+			this.remove();
 			return false;
 		},
 		render: function(options) {
