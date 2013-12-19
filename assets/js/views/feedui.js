@@ -28,7 +28,8 @@ function($, _, Backbone, no, FeedUIModel) {
 			this.bottom = bottom < 0 ? 0 : bottom;
 
 			$(window).one('hit', function() {
-				var skip = _this.model.get('skip') += 25;
+				var skip = _this.model.get('skip') + 25;
+				_this.model.set('skip', skip);
 				_this.feed.url = '/logs?limit=25&skip='+skip;
 				_this.feed.fetch({
 					remove: false,
