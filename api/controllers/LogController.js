@@ -54,7 +54,7 @@ module.exports = {
 						if (err) return res.send(500);
 						// get list of types to filter streams
 						coll.distinct('type', {closed: false}, function(err, types) {
-							if (req.accepts('json', 'html') === 'json') {
+							if (req.isJsony) {
 								res.json(logs);
 							} else {
 								res.view({logs: logs, users: users, types: types, sites: sites});
