@@ -22,10 +22,10 @@ function(Backbone, LogModel, LogView, LogTemplate, FeedUIView) {
 
 			this.on('add', function(model, collection, options) {
 				var operation;
-				if (options.add) {
-					operation = 'prependTo';
-				} else if (options.merge) {
+				if (options.merge) {
 					operation = 'appendTo';
+				} else if (options.merge) {
+					operation = 'prependTo';
 				}
 				$(new LogView({
 						template: _.template(LogTemplate, null, {variable: 'Log'}), 
@@ -36,13 +36,12 @@ function(Backbone, LogModel, LogView, LogTemplate, FeedUIView) {
 				model.view.remove();
 			});
 			this.on('reset', function(collection, model) {
-				_this.refresh();
+				_this.build();
 				new FeedUIView({feed: _this});
 			});
 		},
-		refresh: function() {
+		build: function() {
 			var _this = this;
-			_this.sort({silent: true});
 			_this.temp.$el.empty();
 			_.each(_this.models, function(model) {
 				$(new LogView({template: _.template(LogTemplate, null, {variable: 'Log'}), model: model}).render().el).appendTo(_this.temp.$el)
@@ -52,10 +51,7 @@ function(Backbone, LogModel, LogView, LogTemplate, FeedUIView) {
 			}
 		},
 		model: LogModel,
-		url: '/logs',
-		comparator: function(model) {
-			return -(new Date(model.get('modifiedAt')).getTime());
-		}
+		url: '/logs'
 	});
 
 	return LogCollection;
