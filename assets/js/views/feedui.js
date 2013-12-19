@@ -13,9 +13,8 @@ function($, _, Backbone, no, FeedUIModel) {
 		initialize: function(options) {
 			var _this = this;
 			this.feed = options.feed;
-			this.skip = 0;
 			this.setBottom();
-			this.model = new FeedUIModel();
+			this.model = new FeedUIModel({skip: 0});
 			$(window).on('scroll', function() {
 				if ($(window).scrollTop() >= _this.bottom) {
 					$(this).trigger('hit');
@@ -29,10 +28,14 @@ function($, _, Backbone, no, FeedUIModel) {
 			this.bottom = bottom < 0 ? 0 : bottom;
 
 			$(window).one('hit', function() {
-				_this.skip += 25;
-				_this.feed.url = '/logs?limit=25&skip='+_this.skip;
-				_this.feed.fetch({remove: false});
-				_this.setBottom();
+				var skip = _this.model.get('skip') += 25;
+				_this.feed.url = '/logs?limit=25&skip='+skip;
+				_this.feed.fetch({
+					remove: false,
+					success: function() {
+						_this.setBottom();
+					}
+				});
 			});
 
 			return this.bottom;
