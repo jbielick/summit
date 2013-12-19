@@ -33,12 +33,13 @@ function($, _, Backbone, no, FeedUIModel) {
 				_this.feed.url = '/logs?limit=25&skip='+skip;
 				_this.feed.fetch({
 					remove: false,
-					success: function() {
-						_this.setBottom();
+					success: function(view, response) {
+						if (!_.isEmpty(response)) {
+							_this.setBottom();
+						}
 					}
 				});
 			});
-
 			return this.bottom;
 		}
 	});
