@@ -32,6 +32,7 @@ function($, _, Backbone, no, FeedUIModel) {
 				_this.skip += 25;
 				_this.feed.url = '/logs?limit=25&skip='+_this.skip;
 				_this.feed.fetch({remove: false});
+				_this.setBottom();
 			});
 
 			return this.bottom;
