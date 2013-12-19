@@ -4,7 +4,7 @@
 	</div>
 	<div class="col-xs-9">
 		<div class="row">
-			<div class="col-xs-12 content">
+			<div class="col-xs-12 content feed-content">
 				<div class="well well-sm">
 					<a href="javascript:logs.fetch()">load more...</a>
 				</div>
@@ -19,7 +19,8 @@
 
 <script type="text/javascript" charset="utf-8">
 	
-	require(['jquery', 'backbone', 'collections/log', 'models/feed', 'views/log', 'Router'], function($, Backbone, LogCollection, FeedUIModel, LogView, Router) {
+	require(['jquery', 'backbone', 'collections/log', 'models/feedui', 'views/log', 'Router', 'views/feedui'], function($, Backbone, LogCollection, FeedUIModel, LogView, Router, FeedUIView) {
+
 		var logs = new LogCollection(),
 			$content = $('.content'), socket = io.connect(),
 			feedModel = new FeedUIModel(<%- JSON.stringify(req.params.all()) %>);
@@ -28,7 +29,7 @@
 
 		logs.view = (new (Backbone.View.extend()));
 
-		logs.url = '/logs/feed';
+		logs.url = '/logs';
 
 		logs.on('reset', function(collection, model) {
 			logs.view.$el.empty();
@@ -36,6 +37,7 @@
 				$(new LogView({template: _.template($('#LogViewTemplate').html(), null, {variable: 'Log'}), model: model}).render().el).appendTo(logs.view.$el)
 			});
 			$content.html(logs.view.$el);
+			new FeedUIView({feed: logs});
 		});
 
 		logs.on('add', function(model, collection) {

@@ -38,30 +38,39 @@
 
 <script type="text/javascript" charset="utf-8">
 
-	var socket = io.connect(),
-		sites = new App.Collection.Site();
+require([
+
+	'jquery',
+	'underscore',
+	'collections/site',
+	'views/siterow'
+
+], function($, _, SiteCollection, SiteRowView) {
+
+		var socket = io.connect(),
+			sites = new SiteCollection();
+			
+		sites.on('reset', function(collection) {
+			_.each(collection.models, function(site) {
+				site.view = new SiteRowView({template: _.template($('#SiteRowTemplate').html(), null, {variable: 'Site'}), model: site});
+				site.view.$el.appendTo('tbody');
+			});
+		});
 		
-	sites.on('reset', function(collection) {
-		_.each(collection.models, function(site) {
-			site.view = new App.View.SiteRow({template: _.template($('#SiteRowTemplate').html(), null, {variable: 'Site'}), model: site});
-			site.view.$el.appendTo('tbody');
-		});
-	});
-	
-	socket.on('connect', function socketConnected() {
-		socket.on('message', function messageReceived(message) {
-			console.log(message)
-			if (message.verb === 'create') {
-				sites.add(message.data)
-			} else if (message.verb === 'update') {
-				if (sites.get(message.data.id)) {
-					sites.get(message.data.id).set(message.data)
+		socket.on('connect', function socketConnected() {
+			socket.on('message', function messageReceived(message) {
+				if (message.verb === 'create') {
+					sites.add(message.data)
+				} else if (message.verb === 'update') {
+					if (sites.get(message.data.id)) {
+						sites.get(message.data.id).set(message.data)
+					}
 				}
-			}
+			});
 		});
+		
+		sites.reset(<%- JSON.stringify(sites) %>);
+		socket.get('/sites');
+
 	});
-	
-	sites.reset(<%- JSON.stringify(sites) %>);
-	socket.get('/sites');
-	
 </script>

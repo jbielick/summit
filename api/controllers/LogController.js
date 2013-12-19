@@ -36,6 +36,8 @@ module.exports = {
 		.find()
 		.where(options.where)
 		.sort(options.sort || {updatedAt: -1})
+		.limit(25)
+		.skip(options.skip || 0)
 		.exec(function(err, logs) {
 			if (err) return res.json(err);
 
