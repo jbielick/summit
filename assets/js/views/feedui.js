@@ -30,7 +30,7 @@ function($, _, Backbone, no, FeedUIModel) {
 			$(window).one('hit', function() {
 				var skip = _this.model.get('skip') + 25;
 				_this.model.set('skip', skip);
-				_this.feed.url = '/logs?limit=25&skip='+skip;
+				_this.feed.url = '/feed?limit=25&skip='+skip;
 				_this.feed.fetch({
 					remove: false,
 					success: function(view, response) {

@@ -54,7 +54,11 @@ module.exports = {
 						if (err) return res.send(500);
 						// get list of types to filter streams
 						coll.distinct('type', {closed: false}, function(err, types) {
-							res.view({logs: logs, users: users, types: types, sites: sites});
+							if (req.accepts('json', 'html') === 'json') {
+								res.json(logs);
+							} else {
+								res.view({logs: logs, users: users, types: types, sites: sites});
+							}
 						});
 					});
 				});

@@ -51,7 +51,7 @@ function(Backbone, LogModel, LogView, LogTemplate, FeedUIView) {
 			}
 		},
 		model: LogModel,
-		url: '/logs'
+		url: '/feed'
 	});
 
 	return LogCollection;
