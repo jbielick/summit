@@ -26,8 +26,9 @@ function(Backbone, LogModel, LogView, LogTemplate, FeedUIView) {
 					operation = 'appendTo';
 				} else if (options.merge) {
 					operation = 'prependTo';
+				} else {
+					operation = 'prependTo';
 				}
-				console.log(operation);
 				$(new LogView({
 						template: _.template(LogTemplate, null, {variable: 'Log'}), 
 						model: model
