@@ -29,9 +29,9 @@ function($, _, Backbone, no, FeedUIModel) {
 
 			$(window).one('hit', function() {
 				var skip = _this.model.get('skip') + 25,
-					queryStart = window.location.search ? '?' : '&';
+					queryStart = window.location.search ? '&' : '?';
 				_this.model.set('skip', skip);
-				_this.feed.url = window.location.pathname+queryStart+'limit=25&skip='+skip;
+				_this.feed.url = window.location.href+queryStart+'limit=25&skip='+skip;
 				_this.feed.fetch({
 					remove: false,
 					success: function(view, response) {
