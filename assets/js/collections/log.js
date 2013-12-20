@@ -30,9 +30,9 @@ function(Backbone, LogModel, LogView, LogTemplate, FeedUIView) {
 					operation = 'prependTo';
 				}
 				$(new LogView({
-						template: _.template(LogTemplate, null, {variable: 'Log'}), 
+						el: _.template(LogTemplate, model.toJSON(), {variable: 'Log'}), 
 						model: model
-					}).render().el)[operation](_this.$el);
+					}).el)[operation](_this.$el);
 			});
 			this.on('remove', function(model, collection) {
 				model.view.remove();
@@ -46,10 +46,10 @@ function(Backbone, LogModel, LogView, LogTemplate, FeedUIView) {
 			var _this = this;
 			_this.temp.$el.empty();
 			_.each(_this.models, function(model) {
-				$(new LogView({template: _.template(LogTemplate, null, {variable: 'Log'}), model: model}).render().el).appendTo(_this.temp.$el)
+				new LogView({el: $.parseHTML(_.template(LogTemplate, model.toJSON(), {variable: 'Log'})), model: model}).$el.appendTo(_this.temp.$el)
 			});
 			if (_this.$el) {
-				_this.$el.html(this.temp.$el.html());
+				_this.$el.append(this.temp.$el);
 			}
 		},
 		model: LogModel,

@@ -19,11 +19,19 @@ function($, _, Backbone) {
 			}
 		},
 		events: {
-			'click [data-behavior="dismiss"]'		: 'dismiss',
+			'click [data-behavior]'					: 'delegateBehavior',
 			'click [data-behavior="project/open"]'	: 'openProject',
 			'click [data-toggle="notes"]'			: 'openNotes',
 			'keyup [name="notes"]'					: 'saveNotes',
 			'blur [name="notes"]'					: 'unlock'
+		},
+		delegateBehavior: function(e) {
+			var behavior = e.target.getAttribute('data-behavior');
+			if (behavior && this[behavior]) {
+				this[behavior].call(this, e);
+			} else {
+				throw new Error('Call to undefined method');
+			}
 		},
 		unlock: function(e) {
 			this.lockBinding = false;
@@ -67,7 +75,7 @@ function($, _, Backbone) {
 			if (this.lockBinding) {
 				return this;
 			}
-			this.el.innerHTML = this.template(this.model.toJSON());
+			// this.el.innerHTML = this.template(this.model.toJSON());
 			if (options && options.animate == false) {
 				this.$('.slide-up').removeClass('slide-up');
 			}

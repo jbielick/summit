@@ -43,17 +43,7 @@
 				<small>ID: <strong><?= Log.id ?></strong></small>
 			</div>
 			<div class="col-xs-6 text-right">
-<?
-				if (Log.notes) {
-?>
-				<a href="javascript:void(0)" data-toggle="notes">Open Notes</a>
-<?
-				} else {
-?>
-				<a href="javascript:void(0)" data-toggle="notes">Add Notes</a>
-<?
-				}
-?>
+				<a class="btn btn-sm btn-secondary" href="javascript:void(0)" data-behavior="openNotes"><?= Log.notes ? 'Open Notes' : 'Add Notes' ?></a>
 			</div>
 		</div>
 		<div class="notes" hidden>

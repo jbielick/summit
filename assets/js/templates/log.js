@@ -40,20 +40,11 @@
 		<div class="row">
 			<div class="col-xs-6 text-left">
 				<small>URI: <strong><?= Log.uri || 'n/a' ?></strong></small>
+				<br>
 				<small>ID: <strong><?= Log.id ?></strong></small>
 			</div>
-			<div class="col-xs-6 text-right">
-<?
-				if (Log.notes) {
-?>
-				<a href="javascript:void(0)" data-toggle="notes">Open Notes</a>
-<?
-				} else {
-?>
-				<a href="javascript:void(0)" data-toggle="notes">Add Notes</a>
-<?
-				}
-?>
+			<div class="col-xs-6 text-right padv8">
+				<a class="btn btn-sm btn-default" href="javascript:void(0)" data-behavior="openNotes"><?= Log.notes ? 'Open Notes' : 'Add Notes' ?></a>
 			</div>
 		</div>
 		<div class="notes" hidden>
