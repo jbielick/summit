@@ -24,7 +24,9 @@
 		var logs = new LogCollection({$el: $('.feed-content')}), 
 			socket = io.connect();
 
-		window.router = Router;
+		logs.reset(<%- JSON.stringify(logs) %>);
+
+		// window.router = Router;
 
 		socket.on('connect', function socketConnected() {
 			socket.on('message', function messageReceived(message) {
@@ -40,7 +42,7 @@
 
 		logs.on('change', function(model) {
 			var removed, changed;
-			if (model.get('closed') && logs.url === '/logs/open') {
+			if (model.get('closed')) {
 				logs.remove(model);
 				model.view.remove();
 			} else {
@@ -50,8 +52,6 @@
 				logs.add(model);
 			}
 		});
-
-		logs.reset(<%- JSON.stringify(logs) %>);
 
 		socket.get('/feed', {}, function(response) {});
 	});
