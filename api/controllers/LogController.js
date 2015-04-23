@@ -50,10 +50,10 @@ module.exports = {
 			User.findList(function(err, users) {
 
 				Log.native(function(err, coll) {
-					if (err) return res.send(500);
+					if (err) return res.send(500, err);
 					// get sites list for left-nav
 					coll.distinct('Site.name', function(err, sites) {
-						if (err) return res.send(500);
+						if (err) return res.send(500, err);
 						// get list of types to filter streams
 						coll.distinct('type', {closed: false}, function(err, types) {
 							if (req.wantsJSON) {

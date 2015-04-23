@@ -1,7 +1,7 @@
 <?
 	var logClasses = {
 		error	: 'danger',
-		notice	: 'default', 
+		notice	: 'default',
 		warning : 'warning',
 		authnet	: 'info',
 		info	: 'primary'
@@ -17,11 +17,11 @@
 			<a class="pull-right" href="javascript:void(0)" data-behavior="dismiss" title="Delete">&times;</a>
 <?
 			}
-			if (Log.Site) { 
+			if (Log.Site) {
 ?>
 				<a href="/feed?Site.name=<?=Log.Site.name?>" data-id="<?= Log.Site.id ?>" data-behavior="project/open"><?= Log.Site.name ?></a>
-<? 
-			} else { 
+<?
+			} else {
 ?>
 				<?= Log.host || 'Unknown Origin' ?>
 <?
@@ -30,7 +30,7 @@
 			<small>|</small>
 			<? var d = new Date(Log.createdAt) ?> <?= d.toLocaleString() ?>
 			<small>|</small>
-			<span><?= Log.type.toUpperCase() ?></span>
+			<span><?= Log.type ? Log.type.toUpperCase() : 'error' ?></span>
 		</h3>
 	</div>
 	<div class="panel-body">

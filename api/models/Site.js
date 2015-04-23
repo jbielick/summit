@@ -27,7 +27,10 @@ module.exports = {
 			type: 'boolean',
 			defaultsTo: false
 		},
-		status: 'array',
+		status: {
+			type: 'array',
+			defaultsTo: []
+		},
 		log_count: 'integer',
 		sansStatus: function() {
 			var data = this.toObject();
