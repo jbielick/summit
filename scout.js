@@ -6,6 +6,9 @@
 //
 // while we're unshifting items, we shift any status array with over 100 subdocuments until its length is === 100
 
+var SCOUT_FROM_EMAIL = 'no-reply@example.com';
+var SCOUT_NOTIFY_EMAIL = '';
+
 var Scout = (function() {
 
   function Scout(period) {
@@ -62,8 +65,8 @@ var Scout = (function() {
         html = '<b>Server Status Alert: </b><br><hr><br>Last three status codes for '+site.name+' were '+
             '<b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>, <b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>, and <b>'+_this.http.STATUS_CODES[res.statusCode]+'</b>';
         mailOptions = {
-          from: 'Summit <no-reply@summit.fragmentlabs.com>',
-          to: 'ctlockey@gmail.com',
+          from: 'Summit <' + SCOUT_FROM_EMAIL + '>',
+          to: SCOUT_NOTIFY_EMAIL,
           subject: 'Server Status Alert',
           html: html
         };
